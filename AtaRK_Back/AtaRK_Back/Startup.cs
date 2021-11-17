@@ -19,21 +19,19 @@ namespace AtaRK
 {
     public class Startup
     {
-        private const string dbConnectionString = "Data Source=DESKTOP-QQN4I5C\\SQLEXPRESS;Initial Catalog=atark;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ITokenService, TokenService>();
 
             services.AddDbContext<ServerDbContext>(
-                options => options.UseSqlServer(dbConnectionString));
+                options => options.UseSqlServer(Configuration["DbConnectionString"]));
 
             services.AddHsts(options =>
             {
