@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:21010",
-      "sslPort": 0
+      "applicationUrl": "http://localhost:24773",
+      "sslPort": 44337
     }
   },
   "profiles": {
@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "AtaRK_Back": {
+    "AtaRK": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
