@@ -1,5 +1,6 @@
 ﻿using AtaRK.Data;
 using AtaRK.Models;
+using AtaRK_Back.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,11 +16,13 @@ namespace AtaRK.Controllers
     [ApiController]
     public class MessagesController : ControllerBase
     {
-        private readonly ServerDbContext dbContext;
+        private readonly ServerDbContext _dbContext;
+        private readonly IMailService _mailService;
 
-        public MessagesController(ServerDbContext dbContext)
+        public MessagesController(ServerDbContext dbContext, IMailService mailService)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
+            _mailService = mailService;
         }
 
         [Authorize]
@@ -29,7 +32,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.TechMessages
+                return await _dbContext.TechMessages
                     .Include(x => x.ClimateDevice)
                     .Include(x => x.ShopAdmin)
                     .ToListAsync();
@@ -47,10 +50,46 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.TechMessages
+                return await _dbContext.TechMessages
                        .Include(x => x.ClimateDevice)
                        .Include(x => x.ShopAdmin)
                        .SingleOrDefaultAsync(x => x.Id == messageId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + "\n" + ex.InnerException);
+            }
+        }
+
+        [Authorize]
+        [Route("api/messages/shopadmin/{adminId}")]
+        [HttpGet]
+        public async Task<ActionResult<TechMessage>> GetTechMessagePerShopAdmin(int adminId)
+        {
+            try
+            {
+                return await _dbContext.TechMessages
+                       .Include(x => x.ClimateDevice)
+                       .Include(x => x.ShopAdmin)
+                       .SingleOrDefaultAsync(x => x.ShopAdmin.Id == adminId);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message + "\n" + ex.InnerException);
+            }
+        }
+
+        [Authorize]
+        [Route("api/messages/device/{deviceId}")]
+        [HttpGet]
+        public async Task<ActionResult<TechMessage>> GetTechMessagePerDevice(int deviceId)
+        {
+            try
+            {
+                return await _dbContext.TechMessages
+                       .Include(x => x.ClimateDevice)
+                       .Include(x => x.ShopAdmin)
+                       .SingleOrDefaultAsync(x => x.ClimateDevice.Id == deviceId);
             }
             catch (Exception ex)
             {
@@ -70,7 +109,7 @@ namespace AtaRK.Controllers
                     return BadRequest("Message Is Empty");
                 }
 
-                ClimateDevice device = dbContext.ClimateDevices
+                ClimateDevice device = _dbContext.ClimateDevices
                     .Include(x => x.TechMessages)
                     .SingleOrDefault(x => x.Id == message.ClimateDevice.Id);
                 if (device == null)
@@ -78,7 +117,7 @@ namespace AtaRK.Controllers
                     return BadRequest("Device Not Found");
                 }
 
-                ShopAdmin shopAdmin = dbContext.ShopAdmins
+                ShopAdmin shopAdmin = _dbContext.ShopAdmins
                     .Include(x => x.TechMessages)
                     .SingleOrDefault(x => x.Id == message.ShopAdmin.Id);
                 if (shopAdmin == null)
@@ -95,10 +134,10 @@ namespace AtaRK.Controllers
                     ClimateDevice = device,
                     ShopAdmin = shopAdmin
                 };
-                dbContext.TechMessages.Add(techMessage);
+                _dbContext.TechMessages.Add(techMessage);
                 device.TechMessages.Add(techMessage);
                 shopAdmin.TechMessages.Add(techMessage);
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
@@ -115,14 +154,14 @@ namespace AtaRK.Controllers
         {
             try
             {
-                TechMessage techMessage = dbContext.TechMessages.Find(messageId);
+                TechMessage techMessage = _dbContext.TechMessages.Find(messageId);
                 if (techMessage == null)
                 {
                     return BadRequest("Message Not Found");
                 }
 
-                dbContext.TechMessages.Remove(techMessage);
-                await dbContext.SaveChangesAsync();
+                _dbContext.TechMessages.Remove(techMessage);
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
@@ -144,7 +183,7 @@ namespace AtaRK.Controllers
                     return BadRequest("Answer Is Empty");
                 }
 
-                TechMessage techMessage = dbContext.TechMessages
+                TechMessage techMessage = _dbContext.TechMessages
                     .Include(x => x.TechMessageAnswer)
                     .SingleOrDefault(x => x.Id == messageId);
                 if (techMessage == null)
@@ -152,12 +191,29 @@ namespace AtaRK.Controllers
                     return BadRequest("Tech Message Not Found");
                 }
 
-                dbContext.TechMessageAnswers.Add(answer);
-                techMessage.TechMessageAnswer = answer;
-                techMessage.State = 1;
-                await dbContext.SaveChangesAsync();
+                SystemAdmin admin = _dbContext.SystemAdmins.Find(answer.Id);
+                if (admin == null)
+                {
+                    return BadRequest("Admin Not Found");
+                }
 
-                // TODO: SendMail...
+                TechMessageAnswer dbAnswer = new TechMessageAnswer
+                {
+                    Answer = answer.Answer,
+                    SystemAdmin = admin
+                };
+
+                _dbContext.TechMessageAnswers.Add(dbAnswer);
+                techMessage.TechMessageAnswer = dbAnswer;
+                techMessage.State = 1;
+
+                object sendResult = _mailService.SendTechAnswer(techMessage);
+                if (sendResult is string)
+                {
+                    return BadRequest(sendResult);
+                }
+
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
@@ -174,6 +230,10 @@ namespace AtaRK.Controllers
         {
             try
             {
+                TechMessage techMessage = _dbContext.TechMessages.Find(messageId);
+                techMessage.State = 2;
+                await _dbContext.SaveChangesAsync();
+
                 return Ok();
             }
             catch (Exception ex)
