@@ -1,5 +1,6 @@
 ﻿using AtaRK.Data;
 using AtaRK.Models;
+using AtaRK_Back.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace AtaRK.Controllers
     [ApiController]
     public class ApplicationsController : ControllerBase
     {
-        private readonly ServerDbContext dbContext;
+        private readonly ServerDbContext _dbContext;
+        private readonly IMailService _mailService;
 
-        public ApplicationsController (ServerDbContext dbContext)
+        public ApplicationsController (ServerDbContext dbContext, IMailService mailService)
         {
-            this.dbContext = dbContext;
+            _dbContext = dbContext;
+            _mailService = mailService;
         }
 
         [Authorize]
@@ -28,7 +31,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.ShopApplications
+                return await _dbContext.ShopApplications
                     .Include(x => x.FastFoodFranchise)
                     .ToListAsync();
             }
@@ -45,7 +48,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.ShopApplications
+                return await _dbContext.ShopApplications
                     .Include(x => x.FastFoodFranchise)
                     .SingleOrDefaultAsync(x => x.Id == applicationId);
             }
@@ -66,20 +69,34 @@ namespace AtaRK.Controllers
                     return BadRequest("Application Is Empty");
                 }
 
-                FastFoodFranchise franchise = dbContext.FastFoodFranchises
+                FastFoodFranchise franchise = _dbContext.FastFoodFranchises
                     .Include(x => x.ShopApplications)
+                    .Include(x => x.FranchiseContactInfos)
                     .SingleOrDefault(x => x.Email == application.FastFoodFranchise.Email);
                 if (franchise == null)
                 {
                     return NotFound("Franchise Not Found");
                 }
 
-                dbContext.ShopApplications.Add(application);
-                franchise.ShopApplications.Add(application);
+                ShopApplication dbApplication = new ShopApplication
+                {
+                    Name = application.Name,
+                    Surname = application.Surname,
+                    ContactEmail = application.ContactEmail,
+                    ContactPhone = application.ContactPhone,
+                    City = application.City,
+                    Message = application.Message,
+                    FastFoodFranchise = franchise
+                };
+                _dbContext.ShopApplications.Add(dbApplication);
 
-                // TODO: SendMail...
+                object sendResult = _mailService.SendApplication(dbApplication);
+                if (sendResult is string)
+                {
+                    return BadRequest(sendResult);
+                }
 
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
@@ -96,14 +113,14 @@ namespace AtaRK.Controllers
         {
             try
             {
-                ShopApplication application = dbContext.ShopApplications.Find(applicationId);
+                ShopApplication application = _dbContext.ShopApplications.Find(applicationId);
                 if (application == null)
                 {
                     return NotFound($"Application {applicationId} Not Found");
                 }
 
-                dbContext.ShopApplications.Remove(application);
-                await dbContext.SaveChangesAsync();
+                _dbContext.ShopApplications.Remove(application);
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
