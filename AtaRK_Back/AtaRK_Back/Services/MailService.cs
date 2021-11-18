@@ -1,10 +1,12 @@
 ﻿using AtaRK.Models;
+using AtaRK_Back.Services.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace AtaRK_Back.Services
@@ -13,10 +15,12 @@ namespace AtaRK_Back.Services
     {
         private readonly string _fromEmail = "goodgames.testing@gmail.com";
         private readonly IWebHostEnvironment _env;
+        private readonly IFileService _fileService;
 
-        public MailService(IWebHostEnvironment env)
+        public MailService(IWebHostEnvironment env, IFileService fileService)
         {
             _env = env;
+            _fileService = fileService;
         }
 
         public object SendApplication(ShopApplication application)
@@ -63,7 +67,7 @@ namespace AtaRK_Back.Services
 
                 string toEmail = techMessage.ContactEmail;
 
-                string body = GetTechAnswerBody(techAnswer);
+                string body = GetTechAnswerBody(techMessage, techAnswer);
                 if (body == null)
                 {
                     return "Body Is Empty";
@@ -83,16 +87,31 @@ namespace AtaRK_Back.Services
 
         private string GetApplicationBody(ShopApplication application)
         {
-            const string templateName = "application.txt";
-            // TODO: UseTemplate
-            return null;
+            const string templateName = "\\templates\\application.txt";
+            string applicationTemplate = _fileService.ReadFile(templateName);
+
+            StringBuilder finalApplication = new StringBuilder(applicationTemplate);
+            finalApplication.Replace("{name}", $"{application.Name} {application.Surname}");
+            finalApplication.Replace("{city}", application.City);
+            finalApplication.Replace("{message}", application.Message);
+            finalApplication.Replace("{phone}", application.ContactPhone);
+            finalApplication.Replace("{email}", application.ContactEmail);
+
+            return finalApplication.ToString();
         }
 
-        private string GetTechAnswerBody(TechMessageAnswer techAnswer)
+        private string GetTechAnswerBody(TechMessage techMessage, TechMessageAnswer techAnswer)
         {
-            const string templateName = "answer.txt";
-            // TODO: UseTemplate
-            return null;
+            const string templateName = "\\templates\\answer.txt";
+            string answerTemplate = _fileService.ReadFile(templateName);
+
+            StringBuilder finalAnswer = new StringBuilder(answerTemplate);
+            finalAnswer.Replace("{techMessageTitle}", techMessage.Title);
+            finalAnswer.Replace("{techMessage}", techMessage.Message);
+            finalAnswer.Replace("{deviceNumber}", techMessage.ClimateDevice.DeviceNumber.ToString());
+            finalAnswer.Replace("{answer}", techAnswer.Answer);
+
+            return finalAnswer.ToString();
         }
 
         private MailMessage GetMessage(string toEmail, string body, string fromName)
