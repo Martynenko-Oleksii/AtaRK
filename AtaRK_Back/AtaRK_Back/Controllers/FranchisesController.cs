@@ -2,6 +2,7 @@
 using AtaRK.DTO;
 using AtaRK.Models;
 using AtaRK.Services;
+using AtaRK_Back.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,15 @@ namespace AtaRK.Controllers
     [ApiController]
     public class FranchisesController : ControllerBase
     {
-        private readonly ServerDbContext dbContext;
-        private readonly ITokenService tokenService;
+        private readonly ServerDbContext _dbContext;
+        private readonly ITokenService _tokenService;
+        private readonly IFileService _fileService;
 
-        public FranchisesController(ServerDbContext dbContext, ITokenService tokenService)
+        public FranchisesController(ServerDbContext dbContext, ITokenService tokenService, IFileService fileService)
         {
-            this.dbContext = dbContext;
-            this.tokenService = tokenService;
+            _dbContext = dbContext;
+            _tokenService = tokenService;
+            _fileService = fileService;
         }
 
         [Route("api/franchises/register")]
@@ -46,13 +49,13 @@ namespace AtaRK.Controllers
                     PasswordSalt = hmac.Key
                 };
 
-                dbContext.FastFoodFranchises.Add(franchise);
-                await dbContext.SaveChangesAsync();
+                _dbContext.FastFoodFranchises.Add(franchise);
+                await _dbContext.SaveChangesAsync();
 
                 UserDto userDto = new UserDto
                 {
                     Email = franchise.Email,
-                    Token = tokenService.CreateToken(franchise)
+                    Token = _tokenService.CreateToken(franchise)
                 };
 
                 return Ok(userDto);
@@ -69,7 +72,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                FastFoodFranchise franchise = await dbContext.FastFoodFranchises
+                FastFoodFranchise franchise = await _dbContext.FastFoodFranchises
                     .SingleOrDefaultAsync(x => x.Email == authData.Email);
                 if (franchise == null)
                 {
@@ -84,7 +87,7 @@ namespace AtaRK.Controllers
                 UserDto userDto = new UserDto
                 {
                     Email = franchise.Email,
-                    Token = tokenService.CreateToken(franchise)
+                    Token = _tokenService.CreateToken(franchise)
                 };
 
                 return Ok(userDto);
@@ -101,7 +104,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.FastFoodFranchises
+                return await _dbContext.FastFoodFranchises
                     .Include(x => x.FranchiseImages)
                     .Include(x => x.FranchiseContactInfos)
                     .SingleOrDefaultAsync(x => x.Email == email);
@@ -118,7 +121,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.FastFoodFranchises
+                return await _dbContext.FastFoodFranchises
                     .Include(x => x.FranchiseImages)
                     .ToListAsync();
             }
@@ -140,7 +143,7 @@ namespace AtaRK.Controllers
                     return BadRequest("Franchise Is Empty");
                 }
 
-                FastFoodFranchise franchise = dbContext.FastFoodFranchises
+                FastFoodFranchise franchise = _dbContext.FastFoodFranchises
                     .SingleOrDefault(x => x.Email == franchiseInfo.Email);
                 if (franchise == null)
                 {
@@ -153,7 +156,7 @@ namespace AtaRK.Controllers
                 franchise.MaxTemperature = franchiseInfo.MaxTemperature;
                 franchise.MinHuumidity = franchiseInfo.MinHuumidity;
                 franchise.MaxHuumidity = franchiseInfo.MaxHuumidity;
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 return Ok(franchise);
             }
@@ -181,7 +184,7 @@ namespace AtaRK.Controllers
                     return BadRequest("File Is Empty");
                 }
 
-                FastFoodFranchise franchise = dbContext.FastFoodFranchises
+                FastFoodFranchise franchise = _dbContext.FastFoodFranchises
                     .Include(x => x.FranchiseImages)
                     .SingleOrDefault(x => x.Email == email);
                 if (franchise == null)
@@ -192,23 +195,28 @@ namespace AtaRK.Controllers
                 FranchiseImage franchiseBanner = franchise.FranchiseImages.Find(x => x.IsBanner);
                 if (franchiseBanner != null)
                 {
-                    FranchiseImage dbBanner = dbContext.FranchiseImages.Find(franchiseBanner.Id);
+                    FranchiseImage dbBanner = _dbContext.FranchiseImages.Find(franchiseBanner.Id);
                     franchise.FranchiseImages.Remove(franchiseBanner);
-                    dbContext.FranchiseImages.Remove(dbBanner);
-                    // TODO: DeleteFile...
+                    _dbContext.FranchiseImages.Remove(dbBanner);
+
+                    object deleteResult = _fileService.DeleteImage(franchiseBanner.Path);
+                    if (deleteResult is string)
+                    {
+                        return BadRequest(deleteResult);
+                    }
                 }
 
-                string path = null;
-                // TODO: SaveFile...
+                string path = await _fileService.SaveImageAsync(banner);
+
                 FranchiseImage imageBanner = new FranchiseImage
                 {
                     Path = path,
                     IsBanner = true,
                     FastFoodFranchise = franchise
                 };
-                dbContext.FranchiseImages.Add(imageBanner);
+                _dbContext.FranchiseImages.Add(imageBanner);
                 franchise.FranchiseImages.Add(imageBanner);
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 return Ok(franchise);
             }
@@ -236,7 +244,7 @@ namespace AtaRK.Controllers
                     return BadRequest("Files Is Empty");
                 }
 
-                FastFoodFranchise franchise = dbContext.FastFoodFranchises
+                FastFoodFranchise franchise = _dbContext.FastFoodFranchises
                     .Include(x => x.FranchiseImages)
                     .SingleOrDefault(x => x.Email == email);
                 if (franchise == null)
@@ -247,8 +255,7 @@ namespace AtaRK.Controllers
                 List<FranchiseImage> franchiseImages = new List<FranchiseImage>();
                 foreach (var image in images)
                 {
-                    string path = null;
-                    // TODO: SaveFile...
+                    string path = await _fileService.SaveImageAsync(image);
                     franchiseImages.Add(new FranchiseImage
                     {
                         Path = path,
@@ -257,9 +264,9 @@ namespace AtaRK.Controllers
                     });
                 }
 
-                dbContext.FranchiseImages.AddRange(franchiseImages);
+                _dbContext.FranchiseImages.AddRange(franchiseImages);
                 franchise.FranchiseImages.AddRange(franchiseImages);
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 return Ok(franchise);
             }
@@ -281,7 +288,7 @@ namespace AtaRK.Controllers
                     return BadRequest("ImageId Is Empty");
                 }
 
-                FranchiseImage image = dbContext.FranchiseImages
+                FranchiseImage image = _dbContext.FranchiseImages
                     .Include(x => x.FastFoodFranchise)
                     .SingleOrDefault(x => x.Id == imageId);
                 if (image == null)
@@ -289,9 +296,15 @@ namespace AtaRK.Controllers
                     return NotFound("Image Not Found");
                 }
 
-                dbContext.FranchiseImages.Remove(image);
-                // TODO: DeleteFile...
-                await dbContext.SaveChangesAsync();
+                _dbContext.FranchiseImages.Remove(image);
+
+                object deleteResult =_fileService.DeleteImage(image.Path);
+                if (deleteResult is string)
+                {
+                    return BadRequest(deleteResult);
+                }
+
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
@@ -313,7 +326,7 @@ namespace AtaRK.Controllers
                     return BadRequest("FranchiseInfo Is Empty");
                 }
 
-                FastFoodFranchise franchise = dbContext.FastFoodFranchises
+                FastFoodFranchise franchise = _dbContext.FastFoodFranchises
                     .Include(x => x.FranchiseContactInfos)
                     .SingleOrDefault(x => x.Email == franchiseInfo.Email);
                 if (franchise == null)
@@ -321,10 +334,10 @@ namespace AtaRK.Controllers
                     return NotFound("Franchise Not Found");
                 }
 
-                dbContext.FranchiseContactInfos.RemoveRange(franchise.FranchiseContactInfos);
-                dbContext.FranchiseContactInfos.AddRange(franchiseInfo.FranchiseContactInfos);
+                _dbContext.FranchiseContactInfos.RemoveRange(franchise.FranchiseContactInfos);
+                _dbContext.FranchiseContactInfos.AddRange(franchiseInfo.FranchiseContactInfos);
                 franchise.FranchiseContactInfos = franchiseInfo.FranchiseContactInfos;
-                await dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
 
                 return Ok(franchise);
             }
@@ -341,7 +354,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.FastFoodFranchises
+                return await _dbContext.FastFoodFranchises
                 .Include(x => x.FranchiseShops)
                 .Where(x => x.Email == email)
                 .Select(x => x.FranchiseShops)
@@ -365,15 +378,15 @@ namespace AtaRK.Controllers
                     return BadRequest("Email Is Empty");
                 }
 
-                FastFoodFranchise franchise = dbContext.FastFoodFranchises
+                FastFoodFranchise franchise = _dbContext.FastFoodFranchises
                     .SingleOrDefault(x => x.Email == email);
                 if (franchise == null)
                 {
                     return NotFound("Franchise Not Found");
                 }
 
-                dbContext.FastFoodFranchises.Remove(franchise);
-                await dbContext.SaveChangesAsync();
+                _dbContext.FastFoodFranchises.Remove(franchise);
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
@@ -385,7 +398,7 @@ namespace AtaRK.Controllers
 
         private async Task<bool> UserExists(string email)
         {
-            return await dbContext.FastFoodFranchises.AnyAsync(x => x.Email == email.ToLower());
+            return await _dbContext.FastFoodFranchises.AnyAsync(x => x.Email == email.ToLower());
         }
     }
 }

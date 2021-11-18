@@ -185,6 +185,7 @@ namespace AtaRK.Controllers
 
                 TechMessage techMessage = _dbContext.TechMessages
                     .Include(x => x.TechMessageAnswer)
+                    .Include(x => x.ClimateDevice)
                     .SingleOrDefault(x => x.Id == messageId);
                 if (techMessage == null)
                 {
