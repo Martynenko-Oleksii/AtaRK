@@ -12,5 +12,7 @@ namespace AtaRK.Models
         public string Answer { get; set; }
 
         public TechMessage TechMessage { get; set; }
+
+        public SystemAdmin SystemAdmin { get; set; }
     }
 }
