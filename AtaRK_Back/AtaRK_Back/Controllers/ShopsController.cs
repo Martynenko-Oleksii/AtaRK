@@ -18,13 +18,13 @@ namespace AtaRK.Controllers
     [ApiController]
     public class ShopsController : ControllerBase
     {
-        private readonly ServerDbContext dbContext;
-        private readonly ITokenService tokenService;
+        private readonly ServerDbContext _dbContext;
+        private readonly ITokenService _tokenService;
 
         public ShopsController(ServerDbContext dbContext, ITokenService tokenService)
         {
-            this.dbContext = dbContext;
-            this.tokenService = tokenService;
+            _dbContext = dbContext;
+            _tokenService = tokenService;
         }
 
         [Authorize]
@@ -47,20 +47,20 @@ namespace AtaRK.Controllers
                     PasswordSalt = hmac.Key
                 };
 
-                dbContext.FranchiseShops.Add(shop);
-                await dbContext.SaveChangesAsync();
+                _dbContext.FranchiseShops.Add(shop);
+                await _dbContext.SaveChangesAsync();
 
                 UserDto userDto = new UserDto
                 {
                     Email = shop.Email,
-                    Token = tokenService.CreateToken(shop)
+                    Token = _tokenService.CreateToken(shop)
                 };
 
                 return Ok(userDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -70,7 +70,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                FranchiseShop shop = await dbContext.FranchiseShops
+                FranchiseShop shop = await _dbContext.FranchiseShops
                     .SingleOrDefaultAsync(x => x.Email == authData.Email);
                 if (shop == null)
                 {
@@ -85,14 +85,14 @@ namespace AtaRK.Controllers
                 UserDto userDto = new UserDto
                 {
                     Email = shop.Email,
-                    Token = tokenService.CreateToken(shop)
+                    Token = _tokenService.CreateToken(shop)
                 };
 
                 return Ok(userDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -103,13 +103,13 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.FranchiseShops
+                return await _dbContext.FranchiseShops
                     .Include(x => x.FastFoodFranchise)
                     .ToListAsync();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -120,7 +120,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.FranchiseShops
+                return await _dbContext.FranchiseShops
                     .Include(x => x.FastFoodFranchise)
                     .Include(x => x.ClimateDevices)
                     .Include(x => x.ShopAdmins)
@@ -128,7 +128,71 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
+        [Authorize]
+        [Route("api/shops/update")]
+        [HttpPost]
+        public async Task<ActionResult<FranchiseShop>> UpdateShopInfo(FranchiseShop shop)
+        {
+            try
+            {
+                FranchiseShop dbShop = _dbContext.FranchiseShops.Find(shop.Id);
+                if (shop == null)
+                {
+                    return BadRequest("Shop Not Found");
+                }
+
+                dbShop.Email = shop.Email;
+                dbShop.City = shop.City;
+                dbShop.Street = shop.Street;
+                dbShop.BuildingNumber = shop.BuildingNumber;
+                dbShop.ContactEmail = shop.ContactEmail;
+                dbShop.ContactPhone = shop.ContactPhone;
+                await _dbContext.SaveChangesAsync();
+
+                return Ok(dbShop);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
+        [Authorize]
+        [Route("api/shops/change_authdata")]
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> ChangeShopAuthData(AuthDto authData)
+        {
+            try
+            {
+                FranchiseShop dbShop = _dbContext.FranchiseShops.
+                    SingleOrDefault(x => x.Email == authData.Email);
+                if (dbShop == null)
+                {
+                    return BadRequest("Shop Not Found");
+                }
+
+                HMACSHA512 hmac = new HMACSHA512();
+
+                dbShop.Email = authData.Email;
+                dbShop.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(authData.Password));
+                dbShop.PasswordSalt = hmac.Key;
+                await _dbContext.SaveChangesAsync();
+
+                UserDto userDto = new UserDto
+                {
+                    Email = dbShop.Email,
+                    Token = _tokenService.CreateToken(dbShop)
+                };
+
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -139,21 +203,21 @@ namespace AtaRK.Controllers
         {
             try
             {
-                FranchiseShop shop = dbContext.FranchiseShops
+                FranchiseShop shop = _dbContext.FranchiseShops
                     .SingleOrDefault(x => x.Email == shopEmail);
                 if (shop == null)
                 {
                     return BadRequest("Shop Not Found");
                 }
 
-                dbContext.FranchiseShops.Remove(shop);
-                await dbContext.SaveChangesAsync();
+                _dbContext.FranchiseShops.Remove(shop);
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -164,7 +228,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.FranchiseShops
+                return await _dbContext.FranchiseShops
                     .Include(x => x.ClimateDevices)
                     .Where(x => x.Email == shopEmail)
                     .Select(x => x.ClimateDevices)
@@ -172,13 +236,13 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
         private async Task<bool> UserExists(string email)
         {
-            return await dbContext.FranchiseShops.AnyAsync(x => x.Email == email.ToLower());
+            return await _dbContext.FranchiseShops.AnyAsync(x => x.Email == email.ToLower());
         }
     }
 }

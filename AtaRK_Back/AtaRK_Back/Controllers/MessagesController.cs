@@ -39,7 +39,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -57,7 +57,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -75,7 +75,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -93,7 +93,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -143,7 +143,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -167,7 +167,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -220,7 +220,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -239,7 +239,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
     }

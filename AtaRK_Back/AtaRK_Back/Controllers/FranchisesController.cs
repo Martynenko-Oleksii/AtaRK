@@ -62,7 +62,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -94,7 +94,42 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
+        [Authorize]
+        [Route("api/franchises/change_authdata")]
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> ChangeFranchiseAuthData(AuthDto authData)
+        {
+            try
+            {
+                FastFoodFranchise dbFranchise = _dbContext.FastFoodFranchises.
+                    SingleOrDefault(x => x.Email == authData.Email);
+                if (dbFranchise == null)
+                {
+                    return BadRequest("Franchise Not Found");
+                }
+
+                HMACSHA512 hmac = new HMACSHA512();
+
+                dbFranchise.Email = authData.Email;
+                dbFranchise.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(authData.Password));
+                dbFranchise.PasswordSalt = hmac.Key;
+                await _dbContext.SaveChangesAsync();
+
+                UserDto userDto = new UserDto
+                {
+                    Email = dbFranchise.Email,
+                    Token = _tokenService.CreateToken(dbFranchise)
+                };
+
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -111,7 +146,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -127,7 +162,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -162,7 +197,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -222,7 +257,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -272,7 +307,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -310,7 +345,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -343,7 +378,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -362,7 +397,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -392,7 +427,7 @@ namespace AtaRK.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 

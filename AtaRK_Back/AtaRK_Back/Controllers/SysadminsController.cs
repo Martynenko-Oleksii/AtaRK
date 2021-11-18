@@ -18,13 +18,13 @@ namespace AtaRK.Controllers
     [ApiController]
     public class SysadminsController : ControllerBase
     {
-        private readonly ServerDbContext dbContext;
-        private readonly ITokenService tokenService;
+        private readonly ServerDbContext _dbContext;
+        private readonly ITokenService _tokenService;
 
         public SysadminsController(ServerDbContext dbContext, ITokenService tokenService)
         {
-            this.dbContext = dbContext;
-            this.tokenService = tokenService;
+            _dbContext = dbContext;
+            _tokenService = tokenService;
         }
 
         [Authorize]
@@ -48,20 +48,20 @@ namespace AtaRK.Controllers
                     IsMaster = false
                 };
 
-                dbContext.SystemAdmins.Add(systemAdmin);
-                await dbContext.SaveChangesAsync();
+                _dbContext.SystemAdmins.Add(systemAdmin);
+                await _dbContext.SaveChangesAsync();
 
                 UserDto userDto = new UserDto
                 {
                     Email = systemAdmin.Email,
-                    Token = tokenService.CreateToken(systemAdmin)
+                    Token = _tokenService.CreateToken(systemAdmin)
                 };
 
                 return Ok(userDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -71,7 +71,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                SystemAdmin systemAdmin = await dbContext.SystemAdmins
+                SystemAdmin systemAdmin = await _dbContext.SystemAdmins
                     .SingleOrDefaultAsync(x => x.Email == authData.Email);
                 if (systemAdmin == null)
                 {
@@ -86,14 +86,49 @@ namespace AtaRK.Controllers
                 UserDto userDto = new UserDto
                 {
                     Email = systemAdmin.Email,
-                    Token = tokenService.CreateToken(systemAdmin)
+                    Token = _tokenService.CreateToken(systemAdmin)
                 };
 
                 return Ok(userDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
+        [Authorize]
+        [Route("api/sysadmins/change_authdata")]
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> ChangeSystemAdminAuthData(AuthDto authData)
+        {
+            try
+            {
+                SystemAdmin dbSystemAdmin = _dbContext.SystemAdmins.
+                    SingleOrDefault(x => x.Email == authData.Email);
+                if (dbSystemAdmin == null)
+                {
+                    return BadRequest("Shop Admin Not Found");
+                }
+
+                HMACSHA512 hmac = new HMACSHA512();
+
+                dbSystemAdmin.Email = authData.Email;
+                dbSystemAdmin.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(authData.Password));
+                dbSystemAdmin.PasswordSalt = hmac.Key;
+                await _dbContext.SaveChangesAsync();
+
+                UserDto userDto = new UserDto
+                {
+                    Email = dbSystemAdmin.Email,
+                    Token = _tokenService.CreateToken(dbSystemAdmin)
+                };
+
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -104,11 +139,11 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.SystemAdmins.ToListAsync();
+                return await _dbContext.SystemAdmins.ToListAsync();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -119,26 +154,26 @@ namespace AtaRK.Controllers
         {
             try
             {
-                SystemAdmin admin = dbContext.SystemAdmins.Find(adminId);
+                SystemAdmin admin = _dbContext.SystemAdmins.Find(adminId);
                 if (admin == null)
                 {
                     return BadRequest("Admin Not Found");
                 }
 
-                dbContext.SystemAdmins.Remove(admin);
-                await dbContext.SaveChangesAsync();
+                _dbContext.SystemAdmins.Remove(admin);
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
         private async Task<bool> UserExists(string email)
         {
-            return await dbContext.SystemAdmins.AnyAsync(x => x.Email == email.ToLower());
+            return await _dbContext.SystemAdmins.AnyAsync(x => x.Email == email.ToLower());
         }
     }
 }

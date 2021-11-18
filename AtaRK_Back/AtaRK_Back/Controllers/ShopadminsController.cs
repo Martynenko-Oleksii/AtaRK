@@ -18,13 +18,13 @@ namespace AtaRK.Controllers
     [ApiController]
     public class ShopadminsController : ControllerBase
     {
-        private readonly ServerDbContext dbContext;
-        private readonly ITokenService tokenService;
+        private readonly ServerDbContext _dbContext;
+        private readonly ITokenService _tokenService;
 
         public ShopadminsController(ServerDbContext dbContext, ITokenService tokenService)
         {
-            this.dbContext = dbContext;
-            this.tokenService = tokenService;
+            _dbContext = dbContext;
+            _tokenService = tokenService;
         }
 
         [Authorize]
@@ -47,20 +47,20 @@ namespace AtaRK.Controllers
                     PasswordSalt = hmac.Key
                 };
 
-                dbContext.ShopAdmins.Add(shopAdmin);
-                await dbContext.SaveChangesAsync();
+                _dbContext.ShopAdmins.Add(shopAdmin);
+                await _dbContext.SaveChangesAsync();
 
                 UserDto userDto = new UserDto
                 {
                     Email = shopAdmin.Email,
-                    Token = tokenService.CreateToken(shopAdmin)
+                    Token = _tokenService.CreateToken(shopAdmin)
                 };
 
                 return Ok(userDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -70,7 +70,7 @@ namespace AtaRK.Controllers
         {
             try
             {
-                ShopAdmin shopAdmin = await dbContext.ShopAdmins
+                ShopAdmin shopAdmin = await _dbContext.ShopAdmins
                     .SingleOrDefaultAsync(x => x.Email == authData.Email);
                 if (shopAdmin == null)
                 {
@@ -85,14 +85,49 @@ namespace AtaRK.Controllers
                 UserDto userDto = new UserDto
                 {
                     Email = shopAdmin.Email,
-                    Token = tokenService.CreateToken(shopAdmin)
+                    Token = _tokenService.CreateToken(shopAdmin)
                 };
 
                 return Ok(userDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
+        [Authorize]
+        [Route("api/shopadmins/change_authdata")]
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> ChangeShopadminAuthData(AuthDto authData)
+        {
+            try
+            {
+                ShopAdmin dbShopAdmin = _dbContext.ShopAdmins.
+                    SingleOrDefault(x => x.Email == authData.Email);
+                if (dbShopAdmin == null)
+                {
+                    return BadRequest("Shop Admin Not Found");
+                }
+
+                HMACSHA512 hmac = new HMACSHA512();
+
+                dbShopAdmin.Email = authData.Email;
+                dbShopAdmin.PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(authData.Password));
+                dbShopAdmin.PasswordSalt = hmac.Key;
+                await _dbContext.SaveChangesAsync();
+
+                UserDto userDto = new UserDto
+                {
+                    Email = dbShopAdmin.Email,
+                    Token = _tokenService.CreateToken(dbShopAdmin)
+                };
+
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -103,14 +138,14 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.ShopAdmins
+                return await _dbContext.ShopAdmins
                     .Include(x => x.FranchiseShops)
                     .Include(x => x.TechMessages)
                     .ToListAsync();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -121,14 +156,14 @@ namespace AtaRK.Controllers
         {
             try
             {
-                return await dbContext.ShopAdmins
+                return await _dbContext.ShopAdmins
                     .Include(x => x.FranchiseShops)
                     .Include(x => x.TechMessages)
                     .SingleOrDefaultAsync(x => x.Email == adminEmail);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
@@ -139,27 +174,27 @@ namespace AtaRK.Controllers
         {
             try
             {
-                ShopAdmin admin = dbContext.ShopAdmins
+                ShopAdmin admin = _dbContext.ShopAdmins
                     .SingleOrDefault(x => x.Email == adminEmail);
                 if (admin == null)
                 {
                     return BadRequest("ShopAdmin Not Found");
                 }
 
-                dbContext.ShopAdmins.Remove(admin);
-                await dbContext.SaveChangesAsync();
+                _dbContext.ShopAdmins.Remove(admin);
+                await _dbContext.SaveChangesAsync();
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message + "\n" + ex.InnerException);
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
 
         private async Task<bool> UserExists(string email)
         {
-            return await dbContext.ShopAdmins.AnyAsync(x => x.Email == email.ToLower());
+            return await _dbContext.ShopAdmins.AnyAsync(x => x.Email == email.ToLower());
         }
     }
 }
