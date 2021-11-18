@@ -127,5 +127,22 @@ namespace AtaRK_Back.Controllers
                 return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
+
+        [Authorize]
+        [Route("api/export/climate_statistic")]
+        [HttpPost]
+        public async Task<ActionResult> ExportClimateStatistic([FromForm(Name = "object_name")] string objectName)
+        {
+            try
+            {
+                // TODO: ExportClimateStatistic...
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
     }
 }
