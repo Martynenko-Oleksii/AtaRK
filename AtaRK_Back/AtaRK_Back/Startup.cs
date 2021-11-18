@@ -1,6 +1,7 @@
 using AtaRK.Data;
 using AtaRK.Services;
 using AtaRK_Back.Services;
+using AtaRK_Back.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -31,6 +32,7 @@ namespace AtaRK
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IFileService, FileService>();
 
             services.AddDbContext<ServerDbContext>(
                 options => options.UseSqlServer(Configuration["DbConnectionString"]));
