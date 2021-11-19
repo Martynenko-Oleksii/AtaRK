@@ -13,7 +13,7 @@ namespace AtaRK_Back.Services.Interfaces
     {
         XLWorkbook ExportData();
 
-        void ImportData(List<IFormFile> dataFiles, string tableName);
+        Task ImportDataAsync(IFormFile dataFiles, string tableName);
 
         XLWorkbook CopyData(string table);
 

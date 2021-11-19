@@ -10,8 +10,12 @@ namespace AtaRK_Back.Services.Interfaces
     {
         Task<string> SaveImageAsync(IFormFile image);
 
+        Task<string> SaveDataFileAsync(IFormFile file);
+
         string ReadFile(string path);
 
         object DeleteImage(string path);
+
+        string EnsureCorrectFilename(string filename);
     }
 }

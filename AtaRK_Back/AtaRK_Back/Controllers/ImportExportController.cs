@@ -31,12 +31,12 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/import")]
         [HttpPost]
-        public IActionResult ImportData([FromForm(Name = "table")] string table, 
-            [FromForm(Name = "files")] List<IFormFile> files)
+        public async Task<IActionResult> ImportData([FromForm(Name = "table")] string table, 
+            [FromForm(Name = "file")] IFormFile file)
         {
             try
             {
-                _dataBaseService.ImportData(files, table);
+                await _dataBaseService.ImportDataAsync(file, table);
 
                 return Ok();
             }

@@ -15,6 +15,7 @@ namespace AtaRK.Services
     {
         private readonly IWebHostEnvironment _env;
         private readonly string _imagesFolder = "\\images\\";
+        private readonly string _dataFilesFolder = "\\dataFiles";
 
         public FileService(IWebHostEnvironment env)
         {
@@ -41,6 +42,25 @@ namespace AtaRK.Services
             {
                 return $"{ex.Message}\n{ex.InnerException}";
             }
+        }
+
+        public async Task<string> SaveDataFileAsync(IFormFile dataFile)
+        {
+            var dataFileName = ContentDispositionHeaderValue.
+                Parse(dataFile.ContentDisposition).FileName.Trim('"');
+            dataFileName = EnsureCorrectFilename(dataFileName);
+            string dataFilesFolderPath = GetPathAndFilename(_dataFilesFolder);
+
+            if (!Directory.Exists(dataFilesFolderPath))
+            {
+                Directory.CreateDirectory(dataFilesFolderPath);
+            }
+
+            string filePath = Path.Combine(dataFilesFolderPath, dataFileName);
+            using Stream stream = new FileStream(filePath, FileMode.Create);
+            await dataFile.CopyToAsync(stream);
+
+            return filePath;
         }
 
         public string ReadFile(string path)
@@ -80,7 +100,7 @@ namespace AtaRK.Services
             }
         }
 
-        private string EnsureCorrectFilename(string filename)
+        public string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))
             {
@@ -94,9 +114,9 @@ namespace AtaRK.Services
             return filename;
         }
 
-        private string GetPathAndFilename(string filename)
+        private string GetPathAndFilename(string filePath)
         {
-            return _env.WebRootPath + filename;
+            return _env.WebRootPath + filePath;
         }
     }
 }
