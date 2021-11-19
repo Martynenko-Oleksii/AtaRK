@@ -33,6 +33,7 @@ namespace AtaRK
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IMailService, MailService>();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IDataBaseService, DataBaseService>();
 
             services.AddDbContext<ServerDbContext>(
                 options => options.UseSqlServer(Configuration["DbConnectionString"]));

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AtaRK.Data;
+using AtaRK_Back.Services;
 using AtaRK_Back.Services.Interfaces;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,22 +18,25 @@ namespace AtaRK_Back.Controllers
     {
         private readonly ServerDbContext _dbContext;
         private readonly IFileService _fileService;
+        private readonly IDataBaseService _dataBaseService;
+        private readonly string _contentType = "application/vnd.openxmlformats-officedocument-spreadsheetml.sheet";
 
-        public ImportExportController(ServerDbContext dbContext, IFileService fileService)
+        public ImportExportController(ServerDbContext dbContext, IFileService fileService, IDataBaseService dataBaseService)
         {
             _dbContext = dbContext;
             _fileService = fileService;
+            _dataBaseService = dataBaseService;
         }
 
         [Authorize]
         [Route("api/import")]
         [HttpPost]
-        public async Task<ActionResult> ImportData([FromForm(Name = "table")] string table, 
+        public IActionResult ImportData([FromForm(Name = "table")] string table, 
             [FromForm(Name = "files")] List<IFormFile> files)
         {
             try
             {
-                // TODO: ImportData...
+                _dataBaseService.ImportData(files, table);
 
                 return Ok();
             }
@@ -43,13 +49,16 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/export")]
         [HttpPost]
-        public async Task<ActionResult> ExportData([FromForm] List<string> tables)
+        public IActionResult ExportData([FromForm] List<string> tables)
         {
             try
             {
-                // TODO: ExportData...
+                using MemoryStream stream = new MemoryStream();
+                XLWorkbook workbook = _dataBaseService.ExportData();
+                workbook.SaveAs(stream);
+                byte[] content = stream.ToArray();
 
-                return Ok();
+                return File(content, _contentType, "export.xlsx");
             }
             catch (Exception ex)
             {
@@ -60,13 +69,16 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/copy")]
         [HttpPost]
-        public async Task<ActionResult> CopyData()
+        public IActionResult CopyData([FromForm(Name = "table")] string table)
         {
             try
             {
-                // TODO: CopyData...
+                using MemoryStream stream = new MemoryStream();
+                XLWorkbook workbook = _dataBaseService.CopyData(table);
+                workbook.SaveAs(stream);
+                byte[] content = stream.ToArray();
 
-                return Ok();
+                return File(content, _contentType, $"{table}_copy.xlsx");
             }
             catch (Exception ex)
             {
@@ -77,14 +89,17 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/copy/franchises")]
         [HttpPost]
-        public async Task<ActionResult> CopyDataPerFranchise([FromForm(Name = "franchise_ids")] List<int> franchiseIds,
+        public IActionResult CopyDataPerFranchise([FromForm(Name = "franchise_ids")] List<int> franchiseIds,
             [FromForm(Name = "tables")] List<string> tables)
         {
             try
             {
-                // TODO: CopyDataPerFranchise...
+                using MemoryStream stream = new MemoryStream();
+                XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Franchise, franchiseIds, tables);
+                workbook.SaveAs(stream);
+                byte[] content = stream.ToArray();
 
-                return Ok();
+                return File(content, _contentType, "franchises_copy.xlsx");
             }
             catch (Exception ex)
             {
@@ -95,14 +110,17 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/copy/shops")]
         [HttpPost]
-        public async Task<ActionResult> CopyDataPerShop([FromForm(Name = "shop_ids")] List<int> shopIds,
+        public IActionResult CopyDataPerShop([FromForm(Name = "shop_ids")] List<int> shopIds,
             [FromForm(Name = "tables")] List<string> tables)
         {
             try
             {
-                // TODO: CopyDataPerShop...
+                using MemoryStream stream = new MemoryStream();
+                XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Shop, shopIds, tables);
+                workbook.SaveAs(stream);
+                byte[] content = stream.ToArray();
 
-                return Ok();
+                return File(content, _contentType, "shops_copy.xlsx");
             }
             catch (Exception ex)
             {
@@ -113,14 +131,17 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/copy/devices")]
         [HttpPost]
-        public async Task<ActionResult> CopyDataPeDevice([FromForm(Name = "device_ids")] List<int> deviceIds,
+        public IActionResult CopyDataPeDevice([FromForm(Name = "device_ids")] List<int> deviceIds,
             [FromForm(Name = "tables")] List<string> tables)
         {
             try
             {
-                // TODO: CopyDataPeDevice...
+                using MemoryStream stream = new MemoryStream();
+                XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Device, deviceIds, tables);
+                workbook.SaveAs(stream);
+                byte[] content = stream.ToArray();
 
-                return Ok();
+                return File(content, _contentType, "devices_copy.xlsx");
             }
             catch (Exception ex)
             {
@@ -131,7 +152,7 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/export/climate_statistic")]
         [HttpPost]
-        public async Task<ActionResult> ExportClimateStatistic([FromForm(Name = "object_name")] string objectName)
+        public async Task<IActionResult> ExportClimateStatistic([FromForm(Name = "object_name")] string objectName)
         {
             try
             {
