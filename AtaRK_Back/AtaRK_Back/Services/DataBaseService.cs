@@ -63,7 +63,7 @@ namespace AtaRK_Back.Services
             DataTable dtExcel = new DataTable();
             FillExcelDataTable(dtExcel, connectionString);
 
-            FillDataBase(dtExcel);
+            FillDataBase(dtExcel, tableName);
         }
 
         public XLWorkbook CopyData(string table)
@@ -210,12 +210,12 @@ namespace AtaRK_Back.Services
             connectionExcel.Close();
         }
 
-        private void FillDataBase(DataTable dtExcel)
+        private void FillDataBase(DataTable dtExcel, string tableName)
         {
             using SqlConnection con = new SqlConnection(_configuration["DbConnectionString"]);
             using SqlBulkCopy sqlBulkCopy = new SqlBulkCopy(con);
 
-            sqlBulkCopy.DestinationTableName = "dbo.Student_details";
+            sqlBulkCopy.DestinationTableName = tableName;
 
             con.Open();
             sqlBulkCopy.WriteToServer(dtExcel);
