@@ -141,7 +141,7 @@ namespace AtaRK_Back.Services
 
         private int AddWorksheet(XLWorkbook workbook, string worksheetName, string table, int startRowIndex = 2)
         {
-            IXLWorksheet worksheet = null;
+            IXLWorksheet worksheet;
 
             if (!workbook.Worksheets.Contains(worksheetName))
             {
