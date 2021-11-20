@@ -17,6 +17,8 @@ namespace AtaRK_Back.Services.Interfaces
 
         XLWorkbook CopyData(string table);
 
+        XLWorkbook CopyData(int objectId, string objectName);
+
         XLWorkbook CopyData(ObjectName? objectName = null, List<int> objectIds = null, List<string> tables = null);
     }
 }

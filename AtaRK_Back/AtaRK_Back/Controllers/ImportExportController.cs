@@ -150,15 +150,20 @@ namespace AtaRK_Back.Controllers
         }
 
         [Authorize]
-        [Route("api/export/climate_statistic")]
+        [Route("api/export/climate_statistic/{objectId}")]
         [HttpPost]
-        public async Task<IActionResult> ExportClimateStatistic([FromForm(Name = "object_name")] string objectName)
+        public IActionResult ExportClimateStatistic([FromRoute] int objectId, [FromForm(Name = "object_name")] string objectName)
         {
             try
             {
-                // TODO: ExportClimateStatistic...
+                XLWorkbook climateStatistic = _dataBaseService.CopyData(objectId, objectName);
+                string filePath = _fileService.SaveDataFile(climateStatistic, objectId, objectName);
 
-                return Ok();
+                using MemoryStream stream = new MemoryStream();
+                climateStatistic.SaveAs(stream);
+                byte[] content = stream.ToArray();
+
+                return File(content, _contentType, Path.GetFileName(filePath));
             }
             catch (Exception ex)
             {

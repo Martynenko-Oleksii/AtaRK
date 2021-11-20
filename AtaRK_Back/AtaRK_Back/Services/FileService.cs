@@ -1,4 +1,5 @@
 ﻿using AtaRK_Back.Services.Interfaces;
+using ClosedXML.Excel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -44,9 +45,26 @@ namespace AtaRK.Services
             }
         }
 
+        public string SaveDataFile(XLWorkbook workbook, int objectId, string objectName)
+        {
+            string dataFileName = $"{objectName}_{objectId}.xlsx";
+            string dataFilesFolderPath = GetPathAndFilename(_dataFilesFolder);
+
+            if (!Directory.Exists(dataFilesFolderPath))
+            {
+                Directory.CreateDirectory(dataFilesFolderPath);
+            }
+
+            string filePath = Path.Combine(dataFilesFolderPath, dataFileName);
+            using Stream stream = new FileStream(filePath, FileMode.Create);
+            workbook.SaveAs(stream);
+
+            return filePath;
+        }
+
         public async Task<string> SaveDataFileAsync(IFormFile dataFile)
         {
-            var dataFileName = ContentDispositionHeaderValue.
+            string dataFileName = ContentDispositionHeaderValue.
                 Parse(dataFile.ContentDisposition).FileName.Trim('"');
             dataFileName = EnsureCorrectFilename(dataFileName);
             string dataFilesFolderPath = GetPathAndFilename(_dataFilesFolder);
@@ -61,6 +79,11 @@ namespace AtaRK.Services
             await dataFile.CopyToAsync(stream);
 
             return filePath;
+        }
+
+        public Task<string> GetDataFileAsync(IFormFile file)
+        {
+            throw new NotImplementedException();
         }
 
         public string ReadFile(string path)
@@ -100,7 +123,7 @@ namespace AtaRK.Services
             }
         }
 
-        public string EnsureCorrectFilename(string filename)
+        private string EnsureCorrectFilename(string filename)
         {
             if (filename.Contains("\\"))
             {

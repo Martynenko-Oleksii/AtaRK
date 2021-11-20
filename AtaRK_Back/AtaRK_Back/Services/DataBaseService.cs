@@ -74,6 +74,27 @@ namespace AtaRK_Back.Services
             return workbook;
         }
 
+        public XLWorkbook CopyData(int objectId, string objectName)
+        {
+            using XLWorkbook workbook = new XLWorkbook();
+
+            switch (objectName)
+            {
+                case "Shop":
+                    AddWorksheet(workbook, "Shop Climate Statistic", 
+                        $"ClimateStates WHERE ClimateDeviceId IN " +
+                        $"(SELECT DISTINCT(Id) FROM ClimateDevices WHERE FranchiseShopId = {objectId})");
+                    break;
+                case "Device":
+                    AddWorksheet(workbook, "Device Climate Statistic", $"ClimateStates WHERE ClimateDeviceId = {objectId}");
+                    break;
+                default:
+                    return null;
+            }
+
+            return workbook;
+        }
+
         public XLWorkbook CopyData(ObjectName? objectName = null, List<int> objectIds = null, List<string> tables = null)
         {
             using XLWorkbook workbook = new XLWorkbook();
@@ -173,7 +194,7 @@ namespace AtaRK_Back.Services
 
         private string GetConnectionString(string filePath)
         {
-            string fileName = _fileService.EnsureCorrectFilename(filePath);
+            string fileName = Path.GetFileName(filePath);
             string extension = Path.GetExtension(fileName);
 
             string connectionString = String.Empty;

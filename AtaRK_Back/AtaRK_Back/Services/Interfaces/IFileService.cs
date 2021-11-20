@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ClosedXML.Excel;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,14 @@ namespace AtaRK_Back.Services.Interfaces
     {
         Task<string> SaveImageAsync(IFormFile image);
 
+        string SaveDataFile(XLWorkbook workbook, int objectId, string objectName);
+
         Task<string> SaveDataFileAsync(IFormFile file);
+
+        Task<string> GetDataFileAsync(IFormFile file);
 
         string ReadFile(string path);
 
         object DeleteImage(string path);
-
-        string EnsureCorrectFilename(string filename);
     }
 }
