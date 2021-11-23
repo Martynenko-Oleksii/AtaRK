@@ -41,6 +41,7 @@ namespace AtaRK.Controllers
                 return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
+
         [Authorize]
         [Route("api/messages/notready")]
         [HttpGet]
@@ -60,6 +61,25 @@ namespace AtaRK.Controllers
             }
         }
 
+        [Authorize]
+        [Route("api/messages/{email}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TechMessageAnswer>>> GetAdminAnswers(string email)
+        {
+            try
+            {
+                return await _dbContext.TechMessageAnswers
+                    .Include(x => x.TechMessage)
+                        .ThenInclude(x => x.ShopAdmin)
+                    .Include(x => x.SystemAdmin)
+                    .Where(x => x.SystemAdmin.Email == email)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
 
         [Authorize]
         [Route("api/messages/{messageId}")]
