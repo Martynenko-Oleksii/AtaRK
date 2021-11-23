@@ -4,27 +4,30 @@ $(document).ready(function() {
     var fillTable = function(data, titles, hasInnerObject) {
         $(".table").empty();
 
-        var header = "<tr>";
+        var header = "<thead><tr>";
         for (i = 0; i < titles.length; i++) {
             header += ("<th>" + titles[i] + "</th>");
         }
-        header += "</tr>";
+        header += "</tr></thead>";
         $(".table").append(header);
 
+        var tbody = "<tbody>";
         for (i = 0; i < data.length; i++) {
             var row = "<tr>";
             for (j = 0; j < titles.length; j++) {
                 if (hasInnerObject && j == titles.length - 1) {
                     if (data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)] != null)
-                        row += ("<th>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)]["id"] + "</th>");
+                        row += ("<td>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)]["id"] + "</td>");
                 }
                 else {
-                    row += ("<th>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)] + "</th>");
+                    row += ("<td>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)] + "</td>");
                 }
             }
             row += "</tr>";
-            $(".table").append(row);
+            tbody += row;
         }
+        tbody += "</tbody>";
+        $(".table").append(tbody);
     }
 
     var getData = function(titles, url, table, hasInnerObject = false) {
@@ -49,7 +52,7 @@ $(document).ready(function() {
 
     $("#sysadmin").click(function() {
         getData(["Id", "Email", "Name", "IsMaster"], "/api/sysadmins", "SystemAdmins");
-    
+        
         $("#add").hide();
         $("#add").show();
     });

@@ -16,7 +16,14 @@
 <body>
     <div class="header">
         <div class="container">
-            <img src="img/logo.png" alt="Admin logo">
+            <img class="logo" src="img/logo.png" alt="Admin logo">
+            <nav class="container__menu">
+                <ul>
+                    <li> <input type="button" class="work__menu__btn" id="tables" value="Таблиці" /> </li>
+                    <li> <input type="button" class="work__menu__btn" id="messages" value="Запити" /> </li>
+                    <li> <input type="button" class="work__menu__btn" id="answers" value="Мої відповіді" /> </li>
+                </ul>
+            </nav>
         </div>
     </div>
     <div class="login">
@@ -75,5 +82,7 @@
     <script src="js/main.js"></script>
     <script src="js/login.js"></script>
     <script src="js/tableRequest.js"></script>
+    <script src="js/workRequest.js"></script>
+    <script src="js/import_export.js"></script>
 </body>
 </html>

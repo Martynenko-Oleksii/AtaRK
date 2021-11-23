@@ -3,6 +3,27 @@
     border-bottom: 1px solid #2cace7;
     margin-bottom: 15px;
 }
+.logo{
+    float: left;
+}
+.container__menu{
+    margin-top: 35px;
+}
+.container__menu li{
+    font-size: 24px;
+    display: inline;
+}
+.work__menu__btn{
+    background-color: #fff;
+    height: 50px;
+    width: 180px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+.work__menu__btn:hover{
+    border-color: #2cace7;
+}
 
 .body__content{
     width: 100%;
@@ -43,6 +64,25 @@
     min-width: 70%;
     max-width: 100%;
     margin: 0 auto;
+    border: 1px solid #eee;
+	table-layout: fixed;
+}
+.table th {
+	font-weight: bold;
+	padding: 5px;
+	background: #efefef;
+	border: 1px solid #dddddd;
+}
+.table td{
+	padding: 5px 10px;
+	border: 1px solid #eee;
+	text-align: center;
+}
+.table tbody tr:nth-child(odd){
+	background: #fff;
+}
+.table tbody tr:nth-child(even){
+	background: #F7F7F7;
 }
 
 .function__menu{
