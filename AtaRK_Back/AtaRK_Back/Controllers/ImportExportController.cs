@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AtaRK.Data;
+using AtaRK.DTO;
+using AtaRK.Models;
 using AtaRK_Back.Services;
 using AtaRK_Back.Services.Interfaces;
 using ClosedXML.Excel;
@@ -48,11 +50,22 @@ namespace AtaRK_Back.Controllers
 
         [Authorize]
         [Route("api/export")]
-        [HttpGet]
-        public IActionResult ExportData()
+        [HttpPost]
+        public IActionResult ExportData(AuthDto authDto)
         {
             try
             {
+                SystemAdmin admin = _dbContext.SystemAdmins
+                    .SingleOrDefault(x => x.Email == authDto.Email);
+                if (admin == null)
+                {
+                    return BadRequest("Admin Not Found");
+                }
+                else if (!admin.IsMaster)
+                {
+                    return BadRequest("Admin Is Not Master");
+                }
+
                 using MemoryStream stream = new MemoryStream();
                 XLWorkbook workbook = _dataBaseService.ExportData();
                 workbook.SaveAs(stream);
