@@ -62,7 +62,7 @@ namespace AtaRK.Controllers
         }
 
         [Authorize]
-        [Route("api/messages/{email}")]
+        [Route("api/answers/{email}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TechMessageAnswer>>> GetAdminAnswers(string email)
         {
