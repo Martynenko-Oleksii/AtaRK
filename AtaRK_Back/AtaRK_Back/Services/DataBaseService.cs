@@ -37,7 +37,7 @@ namespace AtaRK_Back.Services
 
         public XLWorkbook ExportData()
         {
-            using XLWorkbook workbook = new XLWorkbook();
+            XLWorkbook workbook = new XLWorkbook();
             AddWorksheet(workbook, "Climate Devices", "ClimateDevices");
             AddWorksheet(workbook, "Climate States", "ClimateStates");
             AddWorksheet(workbook, "Fast-food Franchises", "FastFoodFranchises");
@@ -68,7 +68,7 @@ namespace AtaRK_Back.Services
 
         public XLWorkbook CopyData(string table)
         {
-            using XLWorkbook workbook = new XLWorkbook();
+            XLWorkbook workbook = new XLWorkbook();
             AddWorksheet(workbook, table, table);
 
             return workbook;
@@ -76,7 +76,7 @@ namespace AtaRK_Back.Services
 
         public XLWorkbook CopyData(int objectId, string objectName)
         {
-            using XLWorkbook workbook = new XLWorkbook();
+            XLWorkbook workbook = new XLWorkbook();
 
             switch (objectName)
             {
@@ -97,7 +97,7 @@ namespace AtaRK_Back.Services
 
         public XLWorkbook CopyData(ObjectName? objectName = null, List<int> objectIds = null, List<string> tables = null)
         {
-            using XLWorkbook workbook = new XLWorkbook();
+            XLWorkbook workbook = new XLWorkbook();
 
             switch (objectName)
             {
@@ -165,7 +165,10 @@ namespace AtaRK_Back.Services
             int columnIndex = 1;
             foreach (DataColumn column in dataTable.Columns)
             {
-                worksheet.Cell(1, columnIndex).Value = column.ColumnName;
+                if (column.ColumnName != "PasswordHash" && column.ColumnName != "PasswordSalt")
+                {
+                    worksheet.Cell(1, columnIndex).Value = column.ColumnName;
+                }
                 columnIndex++;
             }
 
@@ -175,7 +178,10 @@ namespace AtaRK_Back.Services
                 columnIndex = 0;
                 foreach (DataColumn column in dataTable.Columns)
                 {
-                    worksheet.Cell(rowIndex, columnIndex + 1).Value = row[columnIndex];
+                    if (row[columnIndex].ToString() != "System.Byte[]")
+                    {
+                        worksheet.Cell(rowIndex, columnIndex + 1).Value = row[columnIndex];
+                    }
                     columnIndex++;
                 }
                 rowIndex++;

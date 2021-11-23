@@ -85,6 +85,7 @@ namespace AtaRK.Controllers
 
                 UserDto userDto = new UserDto
                 {
+                    Id = systemAdmin.Id,
                     Email = systemAdmin.Email,
                     Token = _tokenService.CreateToken(systemAdmin)
                 };

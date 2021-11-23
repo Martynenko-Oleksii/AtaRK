@@ -28,9 +28,11 @@ $(".login__form").submit(function(){
         data: JSON.stringify(authDto),
         success: function (data, textStatus, xhr) {
             console.log(xhr.status);
+            console.log(Date.now());
+            localStorage.setItem("id", data["id"]);
             localStorage.setItem("email", data["email"]);
             localStorage.setItem("token", data["token"]);
-            localStorage.setItem("date", data[Date.now()]);
+            localStorage.setItem("date", Date.now());
             $(".login").hide();
             $(".header").show();
             $(".body__content").show();

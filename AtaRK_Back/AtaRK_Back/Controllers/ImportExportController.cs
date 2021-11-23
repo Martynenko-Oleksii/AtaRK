@@ -21,7 +21,7 @@ namespace AtaRK_Back.Controllers
         private readonly ServerDbContext _dbContext;
         private readonly IFileService _fileService;
         private readonly IDataBaseService _dataBaseService;
-        private readonly string _contentType = "application/vnd.openxmlformats-officedocument-spreadsheetml.sheet";
+        private readonly string _contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
         public ImportExportController(ServerDbContext dbContext, IFileService fileService, IDataBaseService dataBaseService)
         {
@@ -66,12 +66,10 @@ namespace AtaRK_Back.Controllers
                     return BadRequest("Admin Is Not Master");
                 }
 
-                using MemoryStream stream = new MemoryStream();
-                XLWorkbook workbook = _dataBaseService.ExportData();
-                workbook.SaveAs(stream);
-                byte[] content = stream.ToArray();
+                using XLWorkbook workbook = _dataBaseService.ExportData();
+                _fileService.SaveDataFile(workbook, admin.Id, "export");
 
-                return File(content, _contentType, "export.xlsx");
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -82,16 +80,26 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/copy")]
         [HttpPost]
-        public IActionResult CopyData([FromForm(Name = "table")] string table)
+        public IActionResult CopyData([FromForm(Name = "email")] string email, 
+            [FromForm(Name = "table")] string table)
         {
             try
             {
-                using MemoryStream stream = new MemoryStream();
-                XLWorkbook workbook = _dataBaseService.CopyData(table);
-                workbook.SaveAs(stream);
-                byte[] content = stream.ToArray();
+                SystemAdmin admin = _dbContext.SystemAdmins
+                    .SingleOrDefault(x => x.Email == email);
+                if (admin == null)
+                {
+                    return BadRequest("Admin Not Found");
+                }
+                else if (!admin.IsMaster)
+                {
+                    return BadRequest("Admin Is Not Master");
+                }
 
-                return File(content, _contentType, $"{table}_copy.xlsx");
+                using XLWorkbook workbook = _dataBaseService.CopyData(table);
+                _fileService.SaveDataFile(workbook, admin.Id, $"copy_{table}");
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -103,16 +111,26 @@ namespace AtaRK_Back.Controllers
         [Route("api/copy/franchises")]
         [HttpPost]
         public IActionResult CopyDataPerFranchise([FromForm(Name = "franchise_ids")] List<int> franchiseIds,
-            [FromForm(Name = "tables")] List<string> tables)
+            [FromForm(Name = "tables")] List<string> tables,
+            [FromForm(Name = "email")] string email)
         {
             try
             {
-                using MemoryStream stream = new MemoryStream();
-                XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Franchise, franchiseIds, tables);
-                workbook.SaveAs(stream);
-                byte[] content = stream.ToArray();
+                SystemAdmin admin = _dbContext.SystemAdmins
+                    .SingleOrDefault(x => x.Email == email);
+                if (admin == null)
+                {
+                    return BadRequest("Admin Not Found");
+                }
+                else if (!admin.IsMaster)
+                {
+                    return BadRequest("Admin Is Not Master");
+                }
 
-                return File(content, _contentType, "franchises_copy.xlsx");
+                using XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Franchise, franchiseIds, tables);
+                _fileService.SaveDataFile(workbook, admin.Id, "copy_franchises");
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -124,16 +142,26 @@ namespace AtaRK_Back.Controllers
         [Route("api/copy/shops")]
         [HttpPost]
         public IActionResult CopyDataPerShop([FromForm(Name = "shop_ids")] List<int> shopIds,
-            [FromForm(Name = "tables")] List<string> tables)
+            [FromForm(Name = "tables")] List<string> tables,
+            [FromForm(Name = "email")] string email)
         {
             try
             {
-                using MemoryStream stream = new MemoryStream();
-                XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Shop, shopIds, tables);
-                workbook.SaveAs(stream);
-                byte[] content = stream.ToArray();
+                SystemAdmin admin = _dbContext.SystemAdmins
+                    .SingleOrDefault(x => x.Email == email);
+                if (admin == null)
+                {
+                    return BadRequest("Admin Not Found");
+                }
+                else if (!admin.IsMaster)
+                {
+                    return BadRequest("Admin Is Not Master");
+                }
 
-                return File(content, _contentType, "shops_copy.xlsx");
+                using XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Shop, shopIds, tables);
+                _fileService.SaveDataFile(workbook, admin.Id, "copy_shops");
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -145,16 +173,26 @@ namespace AtaRK_Back.Controllers
         [Route("api/copy/devices")]
         [HttpPost]
         public IActionResult CopyDataPeDevice([FromForm(Name = "device_ids")] List<int> deviceIds,
-            [FromForm(Name = "tables")] List<string> tables)
+            [FromForm(Name = "tables")] List<string> tables,
+            [FromForm(Name = "email")] string email)
         {
             try
             {
-                using MemoryStream stream = new MemoryStream();
-                XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Device, deviceIds, tables);
-                workbook.SaveAs(stream);
-                byte[] content = stream.ToArray();
+                SystemAdmin admin = _dbContext.SystemAdmins
+                    .SingleOrDefault(x => x.Email == email);
+                if (admin == null)
+                {
+                    return BadRequest("Admin Not Found");
+                }
+                else if (!admin.IsMaster)
+                {
+                    return BadRequest("Admin Is Not Master");
+                }
 
-                return File(content, _contentType, "devices_copy.xlsx");
+                using XLWorkbook workbook = _dataBaseService.CopyData(ObjectName.Device, deviceIds, tables);
+                _fileService.SaveDataFile(workbook, admin.Id, "copy_devices");
+
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -169,14 +207,10 @@ namespace AtaRK_Back.Controllers
         {
             try
             {
-                XLWorkbook climateStatistic = _dataBaseService.CopyData(objectId, objectName);
-                string filePath = _fileService.SaveDataFile(climateStatistic, objectId, objectName);
+                using XLWorkbook climateStatistic = _dataBaseService.CopyData(objectId, objectName);
+                _fileService.SaveDataFile(climateStatistic, objectId, objectName);
 
-                using MemoryStream stream = new MemoryStream();
-                climateStatistic.SaveAs(stream);
-                byte[] content = stream.ToArray();
-
-                return File(content, _contentType, Path.GetFileName(filePath));
+                return Ok();
             }
             catch (Exception ex)
             {
