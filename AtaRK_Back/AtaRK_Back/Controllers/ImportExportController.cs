@@ -49,7 +49,7 @@ namespace AtaRK_Back.Controllers
         [Authorize]
         [Route("api/export")]
         [HttpPost]
-        public IActionResult ExportData([FromForm] List<string> tables)
+        public IActionResult ExportData()
         {
             try
             {
