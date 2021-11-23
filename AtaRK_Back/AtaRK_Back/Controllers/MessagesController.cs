@@ -41,6 +41,25 @@ namespace AtaRK.Controllers
                 return BadRequest($"{ex.Message}\n{ex.InnerException}");
             }
         }
+        [Authorize]
+        [Route("api/messages/notready")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TechMessage>>> GetTechMessages()
+        {
+            try
+            {
+                return await _dbContext.TechMessages
+                    .Include(x => x.ClimateDevice)
+                    .Include(x => x.ShopAdmin)
+                    .Where(x => x.State == 0 || x.State == 1)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
 
         [Authorize]
         [Route("api/messages/{messageId}")]
