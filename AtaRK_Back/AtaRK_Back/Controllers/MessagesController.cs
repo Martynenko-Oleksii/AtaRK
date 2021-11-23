@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 
 namespace AtaRK.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
     public class MessagesController : ControllerBase
     {

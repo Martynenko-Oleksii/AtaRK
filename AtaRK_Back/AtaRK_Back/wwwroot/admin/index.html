@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="../assets/css/normalize.css">
     <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/login.css">
 
     <script src="https://use.fontawesome.com/b2c3693c3e.js"></script>
@@ -42,19 +43,37 @@
     </div>
     <div class="body__content">
         <div class="table__menu">
-            
+            <ul>
+                <li> <input type="button" class="table__menu__btn" id="sysadmin" value="Системні адміни" /></li>
+                <li> <button type="button" class="table__menu__btn" id="shop_admin">Адміни магазинів</button> </li>
+                <li> <button type="button" class="table__menu__btn" id="franchise">Франшизи</button> </li>
+                <li> <button type="button" class="table__menu__btn" id="application">Питання до франшиз</button> </li>
+                <li> <button type="button" class="table__menu__btn" id="shop">Заклади</button> </li>
+                <li> <button type="button" class="table__menu__btn" id="device">Пристрої мікроклімату</button> </li>
+                <li> <button type="button" class="table__menu__btn" id="climate">Дані мікроклімату</button> </li>
+                <li> <button type="button" class="table__menu__btn" id="tech_message">Технічні запити</button> </li>
+            </ul>
         </div>
         <div class="database__table">
-            
+            <table class="table">
+            </table>
         </div>
         <div class="function__menu">
-            
+            <ul>
+                <li> <input type="button" class="function__menu__btn" id="export" value="Експортувати" /></li>
+                <li> <input type="button" class="function__menu__btn" id="import" value="Імпортувати" /></li>
+                <li> <input type="button" class="function__menu__btn" id="copy" value="Копіювати" /></li>
+                <li> <input type="button" class="function__menu__btn" id="add" value="Додати" /></li>
+                <li> <input type="button" class="function__menu__btn" id="climate__get" value="Отримати статистику" /></li>
+            </ul>
         </div>
     </div>
 
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/main.js"></script>
     <script src="js/login.js"></script>
+    <script src="js/tableRequest.js"></script>
 </body>
 </html>

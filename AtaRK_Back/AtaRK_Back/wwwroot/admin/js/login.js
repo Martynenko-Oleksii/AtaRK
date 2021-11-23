@@ -1,3 +1,4 @@
+//$(".body__content").hide();
 $( ".input" ).focusin(function() {
     $( this ).find( "span" ).animate({"opacity":"0"}, 200);
 });
@@ -28,7 +29,10 @@ $(".login__form").submit(function(){
         success: function (data, textStatus, xhr) {
             console.log(xhr.status);
             localStorage.setItem("token", data["token"]);
+            localStorage.setItem("date", data[Date.now()]);
             $(".login").hide();
+            $(".header").show();
+            $(".body__content").show();
         },
         error: function (xhr, textStatus, errorThrown) {  
             console.log(xhr.status);
