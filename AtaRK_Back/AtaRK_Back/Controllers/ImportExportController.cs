@@ -48,7 +48,7 @@ namespace AtaRK_Back.Controllers
 
         [Authorize]
         [Route("api/export")]
-        [HttpPost]
+        [HttpGet]
         public IActionResult ExportData()
         {
             try
