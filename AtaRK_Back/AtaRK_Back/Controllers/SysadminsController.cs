@@ -3,7 +3,6 @@ using AtaRK.DTO;
 using AtaRK.Models;
 using AtaRK.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
