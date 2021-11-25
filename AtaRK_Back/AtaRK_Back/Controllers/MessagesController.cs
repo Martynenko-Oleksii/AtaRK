@@ -264,7 +264,7 @@ namespace AtaRK.Controllers
 
         [Authorize]
         [Route("api/messages/close/{messageId}")]
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult> CloseTechMessage(int messageId)
         {
             try
