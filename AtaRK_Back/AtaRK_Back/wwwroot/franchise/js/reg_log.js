@@ -1,6 +1,7 @@
 //$(".body__content").hide();
 $( ".input" ).focusin(function() {
     $( this ).find( "span" ).animate({"opacity":"0"}, 200);
+    
 });
   
 $( ".input" ).focusout(function() {
@@ -8,10 +9,6 @@ $( ".input" ).focusout(function() {
 });
   
 $(".login__form").submit(function(){
-    $(this).find(".submit i").removeAttr('class').addClass("fa fa-check").css({"color":"#fff"});
-    $(".submit").css({"background":"#2ecc71", "border-color":"#2ecc71"});
-    $(".feedback").show().animate({"opacity":"1", "bottom":"-80px"}, 400);
-    $("input").css({"border-color":"#2ecc71"});
 
     const authDto = {
         email: $("#email__log").val(), 
@@ -27,7 +24,11 @@ $(".login__form").submit(function(){
         url: "/api/franchises/login",
         data: JSON.stringify(authDto),
         success: function (data, textStatus, xhr) {
-            //console.log(xhr.status);
+            $(this).find(".submit i").removeAttr('class').addClass("fa fa-check").css({"color":"#fff"});
+            $(".submit").css({"background":"#2ecc71", "border-color":"#2ecc71"});
+            $(".feedback").show().animate({"opacity":"1", "bottom":"-80px"}, 400);
+            $("input").css({"border-color":"#2ecc71"});
+
             localStorage.setItem("fran_id", data["id"]);
             localStorage.setItem("fran_email", data["email"]);
             localStorage.setItem("fran_token", data["token"]);
@@ -37,10 +38,13 @@ $(".login__form").submit(function(){
 
             getFranchise();
         },
-        error: function (xhr, textStatus, errorThrown) {  
-            console.log(xhr.status);
-            console.log(textStatus);
-            console.log(errorThrown);
+        error: function (xhr, textStatus, errorThrown) {
+            if (xhr.status == 401) {
+                $(this).find(".submit i").removeAttr('class').addClass("fa fa-xmark").css({"color":"#000"});
+                $(".submit").css({"background":"red", "border-color":"red"});
+                $(".feedback").val("Перевірте дані!");
+                $("input").css({"border-color":"red"});
+            }
         } 
     });
 
@@ -98,6 +102,7 @@ $(".register__btn").click(function (e) {
     
     $(".login__form").hide();
     $(".register__form").show();
+    $(".copyright").css("margin-top", "593px");
 });
 
 $(".login__btn").click(function (e) { 
@@ -105,4 +110,5 @@ $(".login__btn").click(function (e) {
     
     $(".register__form").hide();
     $(".login__form").show();
+    $(".copyright").css("margin-top", "648px");
 });

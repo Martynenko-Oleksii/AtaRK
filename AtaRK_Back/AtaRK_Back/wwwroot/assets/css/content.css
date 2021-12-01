@@ -1,0 +1,48 @@
+.search{
+    position: relative;
+    margin: 20px auto;
+    max-width: 1190px;
+    height: 80px;
+}
+.franchises_list{
+    margin: 20px auto;
+    max-width: 1190px;
+    min-height: 900px;
+}
+
+.search {
+    width: 100%;
+    position: relative;
+    display: flex;
+}
+  
+.searchTerm {
+    font-size: 24px;
+    width: 50%;
+    border: 3px solid #00B4CC;
+    border-right: none;
+    padding: 5px;
+    height: 60px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: rgb(138, 132, 132);
+    margin-top: 8px;
+    margin-left: 520px;
+}
+  
+.searchTerm:focus{
+    color: #000;
+}
+  
+.searchButton {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #00B4CC;
+    background: #00B4CC;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    margin-top: 8px;
+}
+#search{
+    margin: -10px;
+}

@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="assets/css/normalize.css">
     <link rel="stylesheet" href="assets/css/global.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/content.css">
+    <link rel="stylesheet" href="assets/css/footer.css">
 </head>
 <body>
     <header class="header">
@@ -24,15 +26,49 @@
         </div>
     </header>
     <div class="main">
-
+        <div class="search">
+            <input type="text" class="searchTerm" placeholder="Пошук...">
+            <button type="submit" class="searchButton">
+                <img id="search" src="assets/img/search.png" alt="">
+            </button>
+        </div>
+        <div class="franchises_list">
+            <ul id="franchises_list">
+            </ul>
+        </div>
     </div>
     <footer class="footer">
-
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" id="copyright_string">
+                        <span>Copyright © 2021, All Right Reserved Aranod</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="copyright-menu">
+                            <ul>
+                                <li>
+                                    <a href="/">Головна</a>
+                                </li>
+                                <li>
+                                    <a href="/franchise">Франшиза</a>
+                                </li>
+                                <li>
+                                    <a href="/shop">Заклад</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/assets/js/get_franchises.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/search.js"></script>
 </body>
 </html>

@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="css/content.css">
     <link rel="stylesheet" href="css/images.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
 
     <script src="https://use.fontawesome.com/b2c3693c3e.js"></script>
 </head>
@@ -103,23 +104,23 @@
                         <input id="title" type="text" placeholder="Назва франшизи" required />
                     </div>
                     <div class="input">
-                        <label for="title" class="general_info__label">Опис франшизи</label>
+                        <label for="description" class="general_info__label">Опис франшизи</label>
                         <textarea id="description" rows="3" placeholder="Опис франшизи" required ></textarea>
                     </div>
                     <div class="input">
-                        <label for="title" class="general_info__label">Мінімальна температура, градуси</label>
+                        <label for="mint" class="general_info__label">Мінімальна температура, градуси</label>
                         <input id="mint" type="text" placeholder="Мінімальна температура" required />
                     </div>
                     <div class="input">
-                        <label for="title" class="general_info__label">Максимальная температура, градуси</label>
+                        <label for="maxt" class="general_info__label">Максимальная температура, градуси</label>
                         <input id="maxt" type="text" placeholder="Максимальна температура" required />
                     </div>
                     <div class="input">
-                        <label for="title" class="general_info__label">Мінімальна вологість, %</label>
+                        <label for="minh" class="general_info__label">Мінімальна вологість, %</label>
                         <input id="minh" type="text" placeholder="Мінімальна вологість" required />
                     </div>
                     <div class="input">
-                        <label for="title" class="general_info__label">Максимальна вологість, %</label>
+                        <label for="maxh" class="general_info__label">Максимальна вологість, %</label>
                         <input id="maxh" type="text" placeholder="Максимальна вологість" required />
                     </div>
                     <button type="submit" class="info__submit">Зберегти</button>
@@ -136,12 +137,66 @@
                 </div>
             </div>
             <div class="contact_info">
-
+                <input type="button" id="contact_info__button" value="Додати контактну інформацію">
+                <div class="popup">
+                    <div class="popup_content">
+                        <form class="contact_info__form">
+                            <div class="input">
+                                <label for="info_type" class="general_info__label">Тип</label>
+                                <select id="info_type" placeholder="Тип" required >
+                                    <option value="phone">Номер телефону</option>
+                                    <option value="email">Електронна пошта</option>
+                                    <option value="url">Посилання</option>
+                                </select>
+                            </div>
+                            <div class="input">
+                                <label for="url_type" class="general_info__label url__visibility">Посилання на:</label>
+                                <select id="url_type" class="url__visibility" required >
+                                    <option value="web">Сайт</option>
+                                    <option value="social">Соц. мережі</option>
+                                </select>
+                            </div>
+                            <div class="input">
+                                <label for="value" class="general_info__label">Вміст</label>
+                                <input type="text" id="value" placeholder="Вміст" required>
+                            </div>
+                            <button type="submit" class="info__submit" >Зберегти</button>
+                            <button type="button" class="info__close" >Закрити</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="contact_info__list">
+                    <ul id="contact_info__list">
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
     <footer class="footer">
-
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" id="copyright_string">
+                        <span>Copyright © 2021, All Right Reserved Aranod</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="copyright-menu">
+                            <ul>
+                                <li>
+                                    <a href="../">Головна</a>
+                                </li>
+                                <li>
+                                    <a href="../franchise">Франшиза</a>
+                                </li>
+                                <li>
+                                    <a href="../shop">Заклад</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
 

@@ -53,15 +53,19 @@ $(document).ready(function() {
     $("#sysadmin").click(function() {
         getData(["Id", "Email", "Name", "IsMaster"], "/api/sysadmins", "SystemAdmins");
         
-        $("#add").hide();
+        $("#climate__get").hide();
         $("#add").show();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 
     $("#shop_admin").click(function() {
         getData(["Id", "Email"], "/api/shopadmins", "ShopAdmins");
         
-        $("#add").hide();
+        $("#climate__get").hide();
         $("#add").show();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 
     $("#franchise").click(function() {
@@ -69,6 +73,8 @@ $(document).ready(function() {
 
         $("#add").hide();
         $("#climate__get").show();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 
     $("#application").click(function() {
@@ -76,6 +82,8 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").hide();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 
     $("#shop").click(function() {
@@ -83,6 +91,8 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").show();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 
     $("#device").click(function() {
@@ -90,6 +100,8 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").show();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 
     $("#climate").click(function() {
@@ -97,6 +109,8 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").show();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 
     $("#tech_message").click(function() {
@@ -104,5 +118,7 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").hide();
+        $(".popup").hide();
+        $(".database__table").css("visibility", "visible");
     });
 });

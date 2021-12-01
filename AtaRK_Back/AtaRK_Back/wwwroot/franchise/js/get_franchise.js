@@ -24,24 +24,43 @@ var getFranchise = function() {
             $("#maxh").val(data["maxHuumidity"]);
 
             var j = 0;
-                for (i = 0; i < data["franchiseImages"].length; i++) {
-                    if (!data["franchiseImages"][i]["isBanner"]) {
-                        j++;
-                        var slide = "<div class=\"mySlides fade\">";
-                        slide += "<div class=\"numbertext\">" + j + "</div>";
-                        slide += "<img src=\"" + "../.." + data["franchiseImages"][i]["path"] + "\">";
-                        slide += "</div>";
+            for (i = 0; i < data["franchiseImages"].length; i++) {
+                if (!data["franchiseImages"][i]["isBanner"]) {
+                    j++;
+                    var slide = "<div class=\"mySlides fade\">";
+                    slide += "<div class=\"numbertext\">" + j + "</div>";
+                    slide += "<img src=\"" + "../.." + data["franchiseImages"][i]["path"] + "\">";
+                    slide += "</div>";
 
-                        $(".imgs").append(slide);
-                    }
+                    $(".imgs").append(slide);
+                }
+            }
+
+            if (j > 1) {
+                var prevButton = "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>";
+                var nextButton = "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>";
+                $(".imgs").append(prevButton);
+                $(".imgs").append(nextButton);
+            }
+            
+            for (i = 0; i < data["franchiseContactInfos"].length; i++) {
+                var row = "<li class=\"contact_info__row\" id=\"" + data["franchiseContactInfos"][i]["id"] + "\"><p>";
+
+                if (data["franchiseContactInfos"][i]["isPhone"]) {
+                    row += data["franchiseContactInfos"][i]["value"] + "</p>";
+                    row += "<span id=\"phone__i\"><i class=\"fa fa-phone\"></i></span>";
+                } else if (data["franchiseContactInfos"][i]["isEmail"]) {
+                    row += data["franchiseContactInfos"][i]["value"] + "</p>";
+                    row += "<span id=\"email__i\"><i class=\"fa fa-envelope-o\"></i></span>";
+                } else if (data["franchiseContactInfos"][i]["isUrl"]) {
+                    row += "<a href=\"" + data["franchiseContactInfos"][i]["value"] + "\">Посилання</a></p>";
+                    row += "<span id=\"url__i\"><i class=\"fa fa-link\"></i></i></span>";
                 }
 
-                if (j > 1) {
-                    var prevButton = "<a class=\"prev\" onclick=\"plusSlides(-1)\">&#10094;</a>";
-                    var nextButton = "<a class=\"next\" onclick=\"plusSlides(1)\">&#10095;</a>";
-                    $(".imgs").append(prevButton);
-                    $(".imgs").append(nextButton);
-                }
+                row += "<button type=\"button\" class=\"delete__row\">—</button>";
+
+                $("#contact_info__list").append(row);
+            }
         },
         error: function (xhr, textStatus, errorThrown) {  
             console.log(xhr.status);

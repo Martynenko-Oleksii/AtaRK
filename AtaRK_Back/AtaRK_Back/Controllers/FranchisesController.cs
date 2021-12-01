@@ -349,9 +349,10 @@ namespace AtaRK.Controllers
         }
 
         [Authorize]
-        [Route("api/franchises/contactinfo")]
+        [Route("api/franchises/contactinfo/{email}")]
         [HttpPost] 
-        public async Task<ActionResult<FastFoodFranchise>> SetContactInfo(FastFoodFranchise franchiseInfo)
+        public async Task<ActionResult<FastFoodFranchise>> SetContactInfo([FromRoute] string email,
+            [FromBody] FranchiseContactInfo franchiseInfo)
         {
             try
             {
@@ -362,18 +363,50 @@ namespace AtaRK.Controllers
 
                 FastFoodFranchise franchise = _dbContext.FastFoodFranchises
                     .Include(x => x.FranchiseContactInfos)
-                    .SingleOrDefault(x => x.Email == franchiseInfo.Email);
+                    .SingleOrDefault(x => x.Email == email);
                 if (franchise == null)
                 {
                     return NotFound("Franchise Not Found");
                 }
 
-                _dbContext.FranchiseContactInfos.RemoveRange(franchise.FranchiseContactInfos);
-                _dbContext.FranchiseContactInfos.AddRange(franchiseInfo.FranchiseContactInfos);
-                franchise.FranchiseContactInfos = franchiseInfo.FranchiseContactInfos;
+                _dbContext.FranchiseContactInfos.Add(franchiseInfo);
+                franchise.FranchiseContactInfos.Add(franchiseInfo);
                 await _dbContext.SaveChangesAsync();
 
-                return Ok(franchise);
+                FastFoodFranchise returnFranchise = _dbContext.FastFoodFranchises
+                    .Include(x => x.FranchiseContactInfos)
+                    .SingleOrDefault(x => x.Id == franchise.Id);
+
+                return Ok(returnFranchise);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
+        [Authorize]
+        [Route("api/franchises/contactinfo/delete")]
+        [HttpPost]
+        public async Task<ActionResult<FastFoodFranchise>> DeleteContactInfo([FromForm(Name = "email")] string email, 
+            [FromForm(Name = "id")] int id)
+        {
+            try
+            {
+                FranchiseContactInfo info = _dbContext.FranchiseContactInfos.Find(id);
+                if (info == null)
+                {
+                    return NotFound("Info Not Found");
+                }
+
+                _dbContext.FranchiseContactInfos.Remove(info);
+                await _dbContext.SaveChangesAsync();
+
+                FastFoodFranchise returnFranchise = _dbContext.FastFoodFranchises
+                    .Include(x => x.FranchiseContactInfos)
+                    .SingleOrDefault(x => x.Email == email);
+
+                return Ok(returnFranchise);
             }
             catch (Exception ex)
             {

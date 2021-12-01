@@ -124,3 +124,109 @@ $("#add_img").change(function (e) {
         });
     }
 });
+
+$("#contact_info__button").click(function (e) { 
+    e.preventDefault();
+
+    $(".popup").css("visibility", "visible");
+});
+
+$("#info_type").change(function (e) { 
+    e.preventDefault();
+
+    var selectedValue = $(this).val();
+    if (selectedValue == "url") {
+        $(".url__visibility").css("visibility", "visible");
+    }
+});
+
+$(".info__close").click(function (e) { 
+    e.preventDefault();
+    
+    $(".popup").css("visibility", "hidden");
+});
+
+$(".contact_info__form").submit(function (e) { 
+    e.preventDefault();
+    
+    var infoType = $("#info_type").val();
+    var urlType = $("#url_type").val();
+    var value = $("#value").val();
+
+    //console.log(infoType + " " + urlType + " " + value);
+
+    var isPhone = false, isEmail = false, isUrl = false;
+    switch (infoType) {
+        case "phone":
+            isPhone = true;
+            urlType = null;
+            break;
+        case "email":
+            isEmail = true;
+            urlType = null;
+            break;
+        case "url":
+            isUrl = true;
+            break;
+    }
+
+    var infoData = {
+        value: value,
+        isPhone: isPhone,
+        isEmail: isEmail,
+        isUrl: isUrl,
+        urlType: urlType
+    };
+
+    $.ajax({
+        type: "POST",
+        headers: {          
+            Accept: "application/json; charset=utf-8",         
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": "Bearer " + localStorage["fran_token"]
+        },
+        url: "/api/franchises/contactinfo/" + localStorage["fran_email"],
+        data: JSON.stringify(infoData),
+        success: function (data, textStatus, xhr) {
+            $(".popup").css("visibility", "hidden");
+
+            document.location.reload();
+        },
+        error: function (xhr, textStatus, errorThrown) {  
+            console.log(xhr.status);
+            console.log(textStatus);
+            console.log(errorThrown);
+        } 
+    });
+});
+
+$(".delete__row").click(function (e) { 
+    e.preventDefault();
+    
+    var id = parseInt($(this).parent().attr("id"), 10);
+    var email = localStorage["fran_email"];
+
+    var formData = new FormData();
+    formData.append("email", email);
+    formData.append("id", id);
+
+    $.ajax({
+        url: "/api/franchises/contactinfo/delete",
+        type: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        headers: {
+            Accept: "application/json; charset=utf-8",
+            "Authorization": "Bearer " + localStorage["fran_token"]
+        },
+        success: function (data, textStatus, xhr) {
+            $("#" + id).remove();
+        },
+        error: function (xhr, textStatus, errorThrown) {  
+            console.log(xhr.status);
+            console.log(textStatus);
+            console.log(errorThrown);
+        }
+    });
+});

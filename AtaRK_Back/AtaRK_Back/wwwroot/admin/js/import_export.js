@@ -124,26 +124,6 @@ $(document).ready(function() {
     });
 
     // TODO
-    $("#add").click(function() {
-        $.ajax({
-            type: "POST",
-            headers: {     
-                "Content-Type": "application/json; charset=utf-8",
-                "Authorization": "Bearer " + localStorage["token"]
-            },
-            url: "/api/",
-            data: "",
-            success: function (data, textStatus, xhr) {
-            },
-            error: function (xhr, textStatus, errorThrown) {  
-                console.log(xhr.status);
-                console.log(textStatus);
-                console.log(errorThrown);
-            } 
-        });
-    });
-
-    // TODO
     $("#climate__get").click(function() {
         $.ajax({
             type: "POST",

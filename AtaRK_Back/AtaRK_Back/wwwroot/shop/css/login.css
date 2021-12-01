@@ -1,0 +1,83 @@
+.login{
+    position: relative;
+    display: table;
+    top: 40%;
+    width: 250px;
+    margin: -200px auto 0 auto;
+    background: #fff;
+    border-radius: 4px;
+}
+.login__form{
+    transform: scale(1.5);
+}
+  
+.legend{
+    position: relative;
+    width: 100%;
+    display: block;
+    background: #2cace7;
+    padding: 15px;
+    color: #000;
+    font-size: 20px;
+}
+.legend::after{
+    content: "";
+    background-image: url(https://simpleicon.com/wp-content/uploads/multy-user.png);
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+    background-position: 152px -16px;
+    opacity: 0.06;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}
+
+.input{
+    position: relative;
+    width: 90%;
+    margin: 15px auto;
+}
+span{
+      position: absolute;
+      display: block;
+      color: darken(#EDEDED, 10%);
+      left: 10px;
+      top: 8px;
+      font-size: 20px;
+}
+#email__log, #password__log{
+    width: 100%;
+    padding: 10px 5px 10px 40px;
+    display: block;
+    border: 1px solid #EDEDED;
+    border-radius: 4px;
+    transition: 0.2s ease-out;
+    color: darken(#EDEDED, 30%);
+}
+#email__log:focus, #password__log:focus{
+    padding: 10px 5px 10px 10px;
+    outline: 0;
+    border-color: #2cace7;
+}
+
+.submit{
+    width: 45px;
+    height: 45px;
+    display: block;
+    margin: 25px auto -15px auto;
+    background: #fff;
+    border-radius: 100%;
+    border: 1px solid #2cace7;
+    color: #2cace7;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px 7px #fff;
+    transition: 0.2s ease-out;
+}
+.submit:hover, .submit:focus{
+    background: #2cace7;
+    color: #000;
+    outline: 0;
+}
