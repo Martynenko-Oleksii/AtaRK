@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Франшиза</title>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="css/reg_log.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/content.css">
+    <link rel="stylesheet" href="css/images.css">
+
+    <script src="https://use.fontawesome.com/b2c3693c3e.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <img class="logo" src="../assets/img/logo.png" alt="Main logo">
+            <nav class="container__menu">
+                <ul>
+                    <li> <a href="../" class="menu__btn" id="main__btn">Головна</a> </li>
+                    <li> <a href="../franchise/" class="menu__btn" id="franchise__btn">Франшиза</a> </li>
+                    <li> <a href="../shop/" class="menu__btn" id="shop__btn">Заклад</a> </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="reg__log">
+        <form class="login__form">
+            <fieldset>
+                <legend class="legend">Вхід</legend>
+                <div class="input">
+                    <input id="email__log" type="email" placeholder="Email" required />
+                    <span><i class="fa fa-envelope-o"></i></span>
+                </div>
+                <div class="input">
+                    <input id="password__log" type="password" placeholder="Password" required />
+                    <span><i class="fa fa-lock"></i></span>
+                </div>
+                <input type="button" class="register__btn" value="Зареєструватись"> </input>
+                <button type="submit" class="submit">
+                    <i class="fa fa-long-arrow-right"></i>
+                </button>
+            </fieldset>
+            <div class="feedback">
+                login successful <br />
+                redirecting...
+            </div>
+        </form>
+        <form class="register__form">
+            <fieldset>
+                <legend class="legend">Реєстрація</legend>
+                <div class="input">
+                    <input id="email__reg" type="email" placeholder="Email" required />
+                    <span><i class="fa fa-envelope-o"></i></span>
+                </div>
+                <div class="input">
+                    <input id="password__reg" type="password" placeholder="Password" required />
+                    <span><i class="fa fa-lock"></i></span>
+                </div>
+                <div class="input">
+                    <input id="confirm__password" type="password" placeholder="Confirm Password" required />
+                    <span><i class="fa fa-lock"></i></span>
+                </div>
+                <input type="button" class="login__btn" value="Увійти">
+                <button type="submit" class="submit">
+                    <i class="fa fa-long-arrow-right"></i>
+                </button>
+            </fieldset>
+            <div class="feedback">
+                register successful <br />
+                redirecting...
+            </div>
+        </form>
+    </div>
+    <div class="main">
+        <div class="franchise__menu">
+            <ul>
+                <li> <input type="button" class="franchise__menu__btn" id="exit" value="Вийти" /></li>
+                <li> <a href="shops" class="franchise__menu__a" id="shops">Заклади</a></li>
+                <br> <br> <br>
+                <li> <input type="button" class="franchise__menu__btn" id="delete" value="Видалити" /></li>
+            </ul>
+        </div>
+        <div class="franchise__content">
+            <div class="banner">
+                <img src="img/banner.png" id="banner__img" alt="Banner">
+                <br>
+                <label for="add_foto" class="custom-file-upload">
+                    <i class="fa fa-cloud-upload"></i> Додати банер
+                </label>
+                <input type="file" class="banner__input" id="add_foto" multiple accept="image/*,image/jpeg, image/gif" />
+            </div>
+            <div class="general_info">
+                <form class="general_info__form">
+                    <div class="input">
+                        <label for="title" class="general_info__label">Назва франшизи</label>
+                        <input id="title" type="text" placeholder="Назва франшизи" required />
+                    </div>
+                    <div class="input">
+                        <label for="title" class="general_info__label">Опис франшизи</label>
+                        <textarea id="description" rows="3" placeholder="Опис франшизи" required ></textarea>
+                    </div>
+                    <div class="input">
+                        <label for="title" class="general_info__label">Мінімальна температура, градуси</label>
+                        <input id="mint" type="text" placeholder="Мінімальна температура" required />
+                    </div>
+                    <div class="input">
+                        <label for="title" class="general_info__label">Максимальная температура, градуси</label>
+                        <input id="maxt" type="text" placeholder="Максимальна температура" required />
+                    </div>
+                    <div class="input">
+                        <label for="title" class="general_info__label">Мінімальна вологість, %</label>
+                        <input id="minh" type="text" placeholder="Мінімальна вологість" required />
+                    </div>
+                    <div class="input">
+                        <label for="title" class="general_info__label">Максимальна вологість, %</label>
+                        <input id="maxh" type="text" placeholder="Максимальна вологість" required />
+                    </div>
+                    <button type="submit" class="info__submit">Зберегти</button>
+                </form>
+            </div>
+            <div class="images">
+                <label for="add_img" class="custom-file-upload">
+                    <i class="fa fa-cloud-upload"></i> Додати зображення
+                </label>
+                <input type="file" class="banner__input" id="add_img" multiple accept="image/*,image/jpeg, image/gif" />
+                <br>
+                <div class="imgs">
+
+                </div>
+            </div>
+            <div class="contact_info">
+
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+
+    </footer>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/get_franchise.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/reg_log.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/content.js"></script>
+
+    <script>
+        var slideIndex = 1;
+        showSlides(slideIndex);
+
+        // Next/previous controls
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function showSlides(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            slides[slideIndex-1].style.display = "block";
+        }
+    </script>
+</body>
+</html>

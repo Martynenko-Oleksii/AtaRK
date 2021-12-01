@@ -1,0 +1,51 @@
+.franchise__menu{
+    position: relative;
+    width: 20%;
+    display: inline-table;
+}
+.franchise__menu__btn{
+    position: relative;
+    width: 260px;
+    height: 45px;
+    margin: 5px 0 5px -130px;
+    left: 50%;
+    background: #fff;
+    border: 1px solid #2cace7;
+    font-size: 24px;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+}
+.franchise__menu__btn:hover, .franchise__menu__btn:focus{
+    background: #2cace7;
+    color: #fff;
+    outline: 0;
+}
+.franchise__menu__a{
+    position: relative;
+    background-color: #fff;
+    display:block;
+    width:260px;
+    height:45px;
+    margin: 5px 0 5px -130px;
+    left: 50%;
+    font-size: 24px;
+    border: 1px solid #2cace7;
+    transition: 0.2s ease-out;
+    text-align: center;
+    padding-top: 7px;
+    text-align-last: center;
+}
+.franchise__menu__a:hover{
+    background: #2cace7;
+    color: #fff;
+    outline: 0;
+}
+
+#delete{
+    border: 1px solid #ff0000;
+}
+#delete:hover{
+    background: #ff0000;
+    color: #fff;
+    outline: 0;
+}

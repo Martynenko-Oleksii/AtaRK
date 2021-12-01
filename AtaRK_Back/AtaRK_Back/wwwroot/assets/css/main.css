@@ -1,0 +1,26 @@
+.header{
+    width: 100%;
+    border-bottom: 1px solid #2cace7;
+    margin-bottom: 15px;
+}
+.logo{
+    float: left;
+}
+
+.container__menu{
+    margin-top: 35px;
+}
+.container__menu li{
+    font-size: 24px;
+    display: inline;
+}
+.container__menu a{
+    background-color: #fff;
+    line-height: 50px;
+    border: 2px solid transparent;
+    padding: 13px 20px;
+    transition: 0.2s ease-out;
+}
+.menu__btn:hover{
+    border-color: #2cace7;
+}

@@ -1,4 +1,4 @@
-.login{
+.reg__log{
     position: relative;
     display: table;
     top: 40%;
@@ -15,9 +15,9 @@
     position: relative;
     width: 100%;
     display: block;
-    background: #FF7052;
+    background: #2cace7;
     padding: 15px;
-    color: #fff;
+    color: #000;
     font-size: 20px;
 }
 .legend::after{
@@ -47,7 +47,7 @@ span{
       top: 8px;
       font-size: 20px;
 }
-#email, #password{
+#email__log, #password__log{
     width: 100%;
     padding: 10px 5px 10px 40px;
     display: block;
@@ -56,29 +56,29 @@ span{
     transition: 0.2s ease-out;
     color: darken(#EDEDED, 30%);
 }
-#email:focus, #password:focus{
+#email__log:focus, #password__log:focus{
     padding: 10px 5px 10px 10px;
     outline: 0;
-    border-color: #FF7052;
+    border-color: #2cace7;
 }
 
 .submit{
     width: 45px;
     height: 45px;
     display: block;
-    margin: 0 auto -15px auto;
+    margin: 25px auto -15px auto;
     background: #fff;
     border-radius: 100%;
-    border: 1px solid #FF7052;
-    color: #FF7052;
+    border: 1px solid #2cace7;
+    color: #2cace7;
     font-size: 24px;
     cursor: pointer;
     box-shadow: 0px 0px 0px 7px #fff;
     transition: 0.2s ease-out;
 }
 .submit:hover, .submit:focus{
-    background: #FF7052;
-    color: #fff;
+    background: #2cace7;
+    color: #000;
     outline: 0;
 }
   
@@ -107,4 +107,38 @@ span{
     border-bottom-color: #2ecc71;
     border-width: 10px;
     margin-left: -10px;
+}
+
+.register__form{
+    transform: scale(1.5);
+}
+#email__reg, #password__reg, #confirm__password{
+    width: 100%;
+    padding: 10px 5px 10px 40px;
+    display: block;
+    border: 1px solid #EDEDED;
+    border-radius: 4px;
+    transition: 0.2s ease-out;
+    color: darken(#EDEDED, 30%);
+}
+#email__reg:focus, #password__reg:focus, #confirm__password:focus{
+    padding: 10px 5px 10px 10px;
+    outline: 0;
+    border-color: #2cace7;
+}
+
+.register__btn, .login__btn{
+    width: 90%;
+    display: block;
+    margin: 0 auto -15px auto;
+    background: #fff;
+    color: #2cace7;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px 7px #fff;
+    transition: 0.2s ease-out;
+}
+.register__btn:hover, .login__btn:hover{
+    color: #000;
+    outline: 0;
 }

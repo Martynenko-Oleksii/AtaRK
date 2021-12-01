@@ -1,6 +1,6 @@
-$(document).ready(function() {
-    var tableName;
+var tableName;
 
+$(document).ready(function() {
     var fillTable = function(data, titles, hasInnerObject) {
         $(".table").empty();
 

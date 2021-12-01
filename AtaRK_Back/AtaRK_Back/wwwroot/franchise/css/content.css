@@ -1,0 +1,66 @@
+.franchise__content{
+    position: relative;
+    width: 60%;
+    font-size: 24px;
+    display: inline-table;
+}
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.general_info{
+    position: relative;
+    display: table;
+    width: 400px;
+    margin: 200px auto 100px auto;
+    background: #fff;
+    border:1px solid black;
+    transform: scale(1.5);
+}
+#title, #description, #mint, #maxt, #minh, #maxh{
+    width: 100%;
+    padding: 10px 5px 10px 40px;
+    display: block;
+    border: 1px solid #EDEDED;
+    border-radius: 4px;
+    transition: 0.2s ease-out;
+    color: darken(#EDEDED, 30%);
+}
+#title:focus, #description:focus, 
+#mint:focus, #maxt:focus, #minh:focus, #maxh:focus{
+    padding: 10px 5px 10px 10px;
+    outline: 0;
+    border-color: #2cace7;
+}
+.info__submit{
+    width: 200px;
+    height: 45px;
+    display: block;
+    margin: 25px auto -15px auto;
+    background: #fff;
+    border: 1px solid #2cace7;
+    color: #2cace7;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px 7px #fff;
+    transition: 0.2s ease-out;
+}
+.info__submit:hover{
+    background: #2cace7;
+    color: #fff;
+    outline: 0;
+}
+.general_info__label{
+    font-size: 16px;
+}
+
+.images{
+   padding-top: 150px;
+   padding-bottom: 50px;
+}

@@ -27,8 +27,7 @@ $(".login__form").submit(function(){
         url: "/api/sysadmins/login",
         data: JSON.stringify(authDto),
         success: function (data, textStatus, xhr) {
-            console.log(xhr.status);
-            console.log(Date.now());
+            //console.log(xhr.status);
             localStorage.setItem("id", data["id"]);
             localStorage.setItem("email", data["email"]);
             localStorage.setItem("token", data["token"]);

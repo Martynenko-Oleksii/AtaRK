@@ -186,7 +186,7 @@ namespace AtaRK.Controllers
                 }
 
                 franchise.Title = franchiseInfo.Title;
-                franchise.Description = franchise.Description;
+                franchise.Description = franchiseInfo.Description;
                 franchise.MinTemperature = franchiseInfo.MinTemperature;
                 franchise.MaxTemperature = franchiseInfo.MaxTemperature;
                 franchise.MinHuumidity = franchiseInfo.MinHuumidity;
@@ -246,8 +246,7 @@ namespace AtaRK.Controllers
                 FranchiseImage imageBanner = new FranchiseImage
                 {
                     Path = path,
-                    IsBanner = true,
-                    FastFoodFranchise = franchise
+                    IsBanner = true
                 };
                 _dbContext.FranchiseImages.Add(imageBanner);
                 franchise.FranchiseImages.Add(imageBanner);
@@ -294,7 +293,7 @@ namespace AtaRK.Controllers
                     franchiseImages.Add(new FranchiseImage
                     {
                         Path = path,
-                        IsBanner = true,
+                        IsBanner = false,
                         FastFoodFranchise = franchise
                     });
                 }
