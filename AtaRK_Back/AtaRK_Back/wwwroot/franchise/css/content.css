@@ -28,7 +28,7 @@ input[type="file"] {
     transform: scale(1.5);
 }
 #shop_info{
-    margin: -109px auto 100px auto;
+    margin: -90px auto 100px auto;
 }
 #title, #description, #mint, #maxt, #minh, #maxh,
 #info_type, #url_type, #value,

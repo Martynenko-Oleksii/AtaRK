@@ -84,6 +84,7 @@ namespace AtaRK.Controllers
 
                 UserDto userDto = new UserDto
                 {
+                    Id = shop.Id,
                     Email = shop.Email,
                     Token = _tokenService.CreateToken(shop)
                 };
@@ -140,7 +141,7 @@ namespace AtaRK.Controllers
             try
             {
                 FranchiseShop dbShop = _dbContext.FranchiseShops.Find(shop.Id);
-                if (shop == null)
+                if (dbShop == null)
                 {
                     return BadRequest("Shop Not Found");
                 }

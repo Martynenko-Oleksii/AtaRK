@@ -31,6 +31,7 @@ $(".login__form").submit(function (e) {
         data: JSON.stringify(authDto),
         success: function (data, textStatus, xhr) {
             //console.log(xhr.status);
+            console.log(data);
             localStorage.setItem("shop_id", data["id"]);
             localStorage.setItem("shop_email", data["email"]);
             localStorage.setItem("shop_token", data["token"]);

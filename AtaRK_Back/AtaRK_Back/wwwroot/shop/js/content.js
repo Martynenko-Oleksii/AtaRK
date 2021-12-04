@@ -2,7 +2,7 @@ $(".general_info__form").submit(function (e) {
     e.preventDefault();
 
     var data_shop = {
-        email: localStorage["shop_email"],
+        id: localStorage["shop_id"],
         city: $("#city").val(),
         street: $("#street").val(),
         buildingNumber: $("#building").val(),
