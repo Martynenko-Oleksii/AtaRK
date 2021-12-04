@@ -145,7 +145,6 @@ namespace AtaRK.Controllers
                     return BadRequest("Shop Not Found");
                 }
 
-                dbShop.Email = shop.Email;
                 dbShop.City = shop.City;
                 dbShop.Street = shop.Street;
                 dbShop.BuildingNumber = shop.BuildingNumber;
