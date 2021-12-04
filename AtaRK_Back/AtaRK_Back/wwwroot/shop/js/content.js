@@ -5,7 +5,7 @@ $(".general_info__form").submit(function (e) {
         id: localStorage["shop_id"],
         city: $("#city").val(),
         street: $("#street").val(),
-        buildingNumber: $("#building").val(),
+        buildingNumber: $("#buiding").val(),
         contactPhone: $("#contact_phone").val(),
         contactEmail: $("#contact_email").val()
     };
@@ -22,7 +22,7 @@ $(".general_info__form").submit(function (e) {
         success: function (data, textStatus, xhr) {
             $("#city").val(data["city"]);
             $("#street").val(data["street"]);
-            $("#building").val(data["buidingNumber"]);
+            $("#buiding").val(data["buildingNumber"]);
             $("#contact_phone").val(data["contactPhone"]);
             $("#contact_email").val(data["contactEmail"]);
         },

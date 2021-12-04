@@ -87,7 +87,7 @@ $(document).ready(function() {
     });
 
     $("#shop").click(function() {
-        getData(["Id", "Name", "City", "FastFoodFranchise"], "/api/shops", "FranchiseShops", true);
+        getData(["Id", "City", "Street", "BuildingNumber", "FastFoodFranchise"], "/api/shops", "FranchiseShops", true);
     
         $("#add").hide();
         $("#climate__get").show();

@@ -30,14 +30,14 @@ $(".login__form").submit(function (e) {
         url: "/api/shops/login",
         data: JSON.stringify(authDto),
         success: function (data, textStatus, xhr) {
-            //console.log(xhr.status);
-            console.log(data);
             localStorage.setItem("shop_id", data["id"]);
             localStorage.setItem("shop_email", data["email"]);
             localStorage.setItem("shop_token", data["token"]);
             localStorage.setItem("shop_date", Date.now());
             $(".login").hide();
             $(".main").show();
+
+            getShop();
         },
         error: function (xhr, textStatus, errorThrown) {  
             console.log(xhr.status);

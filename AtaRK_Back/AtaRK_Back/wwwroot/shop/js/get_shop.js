@@ -10,7 +10,7 @@ var getShop = function() {
             $("#franchise").val(data["fastFoodFranchise"]["title"]);
             $("#city").val(data["city"]);
             $("#street").val(data["street"]);
-            $("#building").val(data["buidingNumber"]);
+            $("#buiding").val(data["buildingNumber"]);
             $("#contact_phone").val(data["contactPhone"]);
             $("#contact_email").val(data["contactEmail"]);
         },

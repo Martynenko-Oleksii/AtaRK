@@ -204,6 +204,7 @@ namespace AtaRK.Controllers
             try
             {
                 FranchiseShop shop = _dbContext.FranchiseShops
+                    .Include(x => x.ShopAdmins)
                     .SingleOrDefault(x => x.Email == shopEmail);
                 if (shop == null)
                 {
