@@ -14,6 +14,8 @@ $(".login__form").submit(function (e) {
     $(".feedback").show().animate({"opacity":"1", "bottom":"-80px"}, 400);
     $("input").css({"border-color":"#2ecc71"});
 
+    $(".copyright").css("margin-top", "64px");
+    
     const authDto = {
         email: $("#email__log").val(), 
         password: $("#password__log").val()

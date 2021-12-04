@@ -8,7 +8,9 @@ if (localStorage["shop_date"] != null) {
     else {
         $(".login").hide();
         $(".main").show();
-        $(".copyright").css("top", "");
+        $(".copyright").css("margin-top", "64px");
+
+        getShop();
     }
 }
 else {

@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/footer.css">
     <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="../franchise/css/main.css">
+    <link rel="stylesheet" href="../franchise/css/menu.css">
+    <link rel="stylesheet" href="../franchise/css/content.css">
 
     <script src="https://use.fontawesome.com/b2c3693c3e.js"></script>
 </head>
@@ -46,7 +49,43 @@
         </form>
     </div>
     <div class="main">
-
+        <div class="shop__menu">
+            <ul>
+                <li> <input type="button" class="shop__menu__btn" id="exit" value="Вийти" /></li>
+                <li> <a href="devices" class="shop__menu__a" id="shops">Пристрої</a></li>
+                <br> <br> <br>
+                <li> <input type="button" class="shop__menu__btn" id="delete" value="Видалити" /></li>
+            </ul>
+        </div>
+        <div class="general_info" id="shop_info">
+            <form class="general_info__form">
+                <div class="input">
+                    <label for="franchise" class="general_info__label">Франшиза</label>
+                    <input id="franchise" type="text" disabled="true" />
+                </div>
+                <div class="input">
+                    <label for="city" class="general_info__label">Місто</label>
+                    <input id="city" type="text" placeholder="Місто" required />
+                </div>
+                <div class="input">
+                    <label for="street" class="general_info__label">Вулиця</label>
+                    <input id="street" type="text" placeholder="Вулиця" required />
+                </div>
+                <div class="input">
+                    <label for="buiding" class="general_info__label">Будинок</label>
+                    <input id="buiding" type="text" placeholder="Будинок" required />
+                </div>
+                <div class="input">
+                    <label for="contact_email" class="general_info__label">Контактна пошта</label>
+                    <input id="contact_email" type="text" placeholder="Контактна пошта" required />
+                </div>
+                <div class="input">
+                    <label for="contact_phone" class="general_info__label">Контактний телефон</label>
+                    <input id="contact_phone" type="text" placeholder="Контактний телефон" required />
+                </div>
+                <button type="submit" class="info__submit">Зберегти</button>
+            </form>
+        </div>
     </div>
     <footer class="footer">
         <div class="copyright">
@@ -78,7 +117,9 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/get_shop.js"></script>
     <script src="js/main.js"></script>
     <script src="js/login.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 </html>

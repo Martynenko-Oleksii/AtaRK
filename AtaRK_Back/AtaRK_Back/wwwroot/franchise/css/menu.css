@@ -1,9 +1,9 @@
-.franchise__menu{
+.franchise__menu, .shop__menu{
     position: relative;
     width: 20%;
     display: inline-table;
 }
-.franchise__menu__btn{
+.franchise__menu__btn, .shop__menu__btn{
     position: relative;
     width: 260px;
     height: 45px;
@@ -15,12 +15,13 @@
     cursor: pointer;
     transition: 0.2s ease-out;
 }
-.franchise__menu__btn:hover, .franchise__menu__btn:focus{
+.franchise__menu__btn:hover, .franchise__menu__btn:focus,
+.shop__menu__btn:hover, .shop__menu__btn:focus{
     background: #2cace7;
     color: #fff;
     outline: 0;
 }
-.franchise__menu__a{
+.franchise__menu__a, .shop__menu__a{
     position: relative;
     background-color: #fff;
     display:block;
@@ -35,7 +36,7 @@
     padding-top: 7px;
     text-align-last: center;
 }
-.franchise__menu__a:hover{
+.franchise__menu__a:hover, .shop__menu__a:hover{
     background: #2cace7;
     color: #fff;
     outline: 0;

@@ -27,8 +27,13 @@ input[type="file"] {
     border:1px solid black;
     transform: scale(1.5);
 }
+#shop_info{
+    margin: -109px auto 100px auto;
+}
 #title, #description, #mint, #maxt, #minh, #maxh,
-#info_type, #url_type, #value{
+#info_type, #url_type, #value,
+#city, #street, #buiding, #contact_email, #contact_phone,
+#franchise{
     width: 100%;
     padding: 10px 5px 10px 40px;
     display: block;
@@ -39,7 +44,9 @@ input[type="file"] {
 }
 #title:focus, #description:focus, 
 #mint:focus, #maxt:focus, #minh:focus, #maxh:focus,
-#info_type:focus, #url_type:focus, #value:focus{
+#info_type:focus, #url_type:focus, #value:focus,
+#city:focus, #street:focus, #buiding:focus, 
+#contact_email:focus, #contact_phone:focus{
     padding: 10px 5px 10px 10px;
     outline: 0;
     border-color: #2cace7;
