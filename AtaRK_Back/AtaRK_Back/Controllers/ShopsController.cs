@@ -204,13 +204,14 @@ namespace AtaRK.Controllers
             try
             {
                 FranchiseShop shop = _dbContext.FranchiseShops
-                    .Include(x => x.ShopAdmins)
                     .SingleOrDefault(x => x.Email == shopEmail);
                 if (shop == null)
                 {
                     return BadRequest("Shop Not Found");
                 }
 
+                ShopAdmin admin = _dbContext.ShopAdmins.Find(shop.Id);
+                _dbContext.ShopAdmins.Remove(admin);
                 _dbContext.FranchiseShops.Remove(shop);
                 await _dbContext.SaveChangesAsync();
 

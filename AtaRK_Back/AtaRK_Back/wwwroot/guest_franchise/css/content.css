@@ -1,0 +1,163 @@
+img {
+    margin: 0px;
+}
+
+h2, h3, h4 {
+    text-align: center;
+    margin: 25px 0px;
+}
+h2 {
+    font-size: 40px;
+}
+h3 {
+    font-size: 30px;
+}
+h4 {
+    font-size: 24px;
+}
+
+.description {
+    width: 1170px;
+    margin: 0 auto;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid #2cace7;
+}
+.description p{
+    margin-bottom: 50px;
+}
+
+.rules {
+    width: 1170px;
+    margin: 0 auto;
+    margin-top: 50px;
+    border: 1px solid #2cace7;
+}
+.rules__container {
+    font-size: 20px;
+    text-align: center;
+}
+.rules__container p{
+    position: relative;
+    margin: 5px auto;
+    border: 1px solid #2cace7;
+    max-width: 30%;
+}
+.temperature {
+    position: relative;
+    width: 50%;
+    float: left;
+}
+.humidity {
+    position: relative;
+    width: 50%;
+    float: right;
+}
+
+.images {
+    width: 1170px;
+    margin: 0 auto;
+}
+
+.application {
+    position: relative;
+    width: 1170px;
+    margin: 0 auto;
+    margin-top: 50px;
+}
+.application_info {
+    position: relative;
+    display: table;
+    width: 400px;
+    margin: 150px auto 200px auto;
+    background: #fff;
+    border:1px solid black;
+    transform: scale(1.5);
+}
+.input {
+    width: 90%;
+    margin: 20px auto;
+}
+#name, #surname, 
+#phone, #email, 
+#city, #message{
+    width: 100%;
+    padding: 10px 5px 10px 40px;
+    display: block;
+    border: 1px solid #EDEDED;
+    border-radius: 4px;
+    transition: 0.2s ease-out;
+    color: darken(#EDEDED, 30%);
+}
+#name:focus, #surname:focus, 
+#phone:focus, #email:focus, 
+#city:focus, #message:focus{
+    padding: 10px 5px 10px 10px;
+    outline: 0;
+    border-color: #2cace7;
+}
+.info__submit{
+    width: 200px;
+    height: 45px;
+    display: block;
+    margin: 25px auto -15px auto;
+    background: #fff;
+    border: 1px solid #2cace7;
+    color: #2cace7;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px 7px #fff;
+    transition: 0.2s ease-out;
+}
+.info__submit:hover{
+    background: #2cace7;
+    color: #fff;
+    outline: 0;
+}
+.general_info__label{
+    font-size: 16px;
+}
+
+.contacts {
+    width: 1170px;
+    margin: 0 auto;
+    border: 1px solid #2cace7;
+    margin-top: 50px;
+}
+.contacts__container {
+    position: relative;
+    margin: 0 auto;
+    display: table;
+    font-size: 20px;
+}
+.contacts__list {
+    padding-left: 45px;
+    padding-right: 45px;
+    padding-bottom: 20px;
+    display: inline-table;
+}
+.contacts__list li{
+    margin: 15px;
+}
+#phone__i, #email__i, #url__i{
+    position: absolute;
+    margin: -22px;
+}
+
+.popup {
+    display: none;
+    position: absolute;
+    top: -300px;
+    left: -400px;
+    width: 1920px;
+    height: 1400px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup img{
+    border-radius: 10%;
+    max-width: 400px;
+    max-height: 400px;
+    margin-top: 500px;
+    margin-left: 790px;
+}

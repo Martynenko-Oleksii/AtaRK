@@ -27,6 +27,7 @@ var fillList = function(data, searchString) {
         } else if (searchString.length == 0) {
             franchise += "<li class=\"franchises_list__row\" ";
             franchise += "id=\"" + data[i]["id"] + "\">";
+            localStorage.setItem("franchise_" + data[i]["id"], data[i]["email"]);
             franchise += "<a href=\"guest_franchise/?id=" + data[i]["id"] + "\">";
 
             var bannerPath = "";

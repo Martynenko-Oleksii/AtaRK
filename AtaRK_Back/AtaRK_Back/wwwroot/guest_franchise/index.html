@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Головна</title>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" href="../assets/img/favicon.png" type="image/png">
+    
+    <link rel="stylesheet" href="../assets/css/normalize.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/footer.css">
+    <link rel="stylesheet" href="css/content.css">
+    <link rel="stylesheet" href="css/images.css">
+
+    <script src="https://use.fontawesome.com/b2c3693c3e.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <img class="logo" src="../assets/img/logo.png" alt="Main logo">
+            <nav class="container__menu">
+                <ul>
+                    <li> <a href="../" class="menu__btn" id="main__btn">Головна</a> </li>
+                    <li> <a href="../franchise/" class="menu__btn" id="franchise__btn">Франшиза</a> </li>
+                    <li> <a href="../shop/" class="menu__btn" id="shop__btn">Заклад</a> </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="main">
+        <div class="container" id="franchise">
+            <div class="banner">
+                <img src="../franchise/img/banner.png" id="banner__img" alt="Banner">
+            </div>
+            <div class="title">
+                <h2 id="title"></h2>
+            </div>
+            <div class="description">
+                <h3 id="description_title">Опис</h3>
+                <p id="description"></p>
+            </div>
+            <div class="rules">
+                <h3 id="rules_title">Мікрокліматичні правила</h3>
+                <div class="rules__container">
+                    <div class="temperature">
+                        <h4 id="rules_title">Температура</h4>
+                        <p id="mint">Мін: </p>
+                        <p id="maxt">Макс: </p>
+                    </div>
+                    <div class="humidity">
+                        <h4 id="rules_title">Вологість</h4>
+                        <p id="minh">Мін: </p>
+                        <p id="maxh">Макс: </p>
+                    </div>
+                </div>
+            </div>
+            <div class="images">
+                <h3 id="images_title">Галерея</h3>
+                <div class="imgs"> </div>
+            </div>
+            <div class="application">
+                <h3 id="applicarion_title">Є питання? Пишіть нам!</h3>
+                <div class="application_info">
+                    <form class="application__form">
+                        <div class="input">
+                            <input id="name" type="text" placeholder="Ім'я" required />
+                        </div>
+                        <div class="input">
+                            <input id="surname" type="text" placeholder="Прізвище" required />
+                        </div>
+                        <div class="input">
+                            <input id="phone" type="text" placeholder="Телефон" required />
+                        </div>
+                        <div class="input">
+                            <input id="email" type="text" placeholder="Пошта" required />
+                        </div>
+                        <div class="input">
+                            <input id="city" type="text" placeholder="Місто" required />
+                        </div>
+                        <div class="input">
+                            <textarea id="message" rows="5" placeholder="Повідомлення" required ></textarea>
+                        </div>
+                        <button type="submit" class="info__submit">Надіслати</button>
+                    </form>
+                </div>
+                <div class="popup">
+                    <img src="../assets/img/success.png" alt="Success">
+                </div>
+            </div>
+            <div class="contacts">
+                <h3 id="contacts_title">Контакти</h3>
+                <div class="contacts__container">
+                    <ul class="contacts__list" id="contact_phone"> </ul>
+                    <ul class="contacts__list" id="contact_email"> </ul>
+                    <ul class="contacts__list" id="contact_url"> </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="copyright">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6" id="copyright_string">
+                        <span>Copyright © 2021, All Right Reserved Aranod</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="copyright-menu">
+                            <ul>
+                                <li>
+                                    <a href="../">Головна</a>
+                                </li>
+                                <li>
+                                    <a href="../franchise">Франшиза</a>
+                                </li>
+                                <li>
+                                    <a href="../shop">Заклад</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/application.js"></script>
+
+    <script>
+        var slideIndex = 1;
+
+        var plusSlides = function(n) {
+            showSlides(slideIndex += n);
+        }
+
+        var showSlides = function(n) {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+
+            if (n > slides.length) {
+                slideIndex = 1
+            }
+
+            if (n < 1) {
+                slideIndex = slides.length
+            }
+
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+
+            slides[slideIndex-1].style.display = "block";
+        }
+
+        $(document).ready(function () {
+            showSlides(slideIndex);
+        });
+    </script>
+</body>
+</html>

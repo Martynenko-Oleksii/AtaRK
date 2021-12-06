@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace AtaRK.Models
 {
@@ -14,6 +15,7 @@ namespace AtaRK.Models
 
         public FranchiseShop FranchiseShop { get; set; }
 
+        [JsonIgnore]
         public List<ClimateState> ClimateStates { get; set; }
 
         public List<TechMessage> TechMessages { get; set; }
