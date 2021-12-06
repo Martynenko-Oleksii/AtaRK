@@ -10,14 +10,17 @@ $(document).ready(function() {
         $(".table").append(header);
 
         for (i = 0; i < data.length; i++) {
-            var row = "<tr>";
+            var row = "<tr class=\"row\">";
             for (j = 0; j < titles.length; j++) {
                 if (hasInnerObject && j == titles.length - 1) {
                     if (data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)] != null)
-                        row += ("<th>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)]["id"] + "</th>");
+                        row += ("<td>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)]["id"] + "</td>");
                 }
                 else {
-                    row += ("<th>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)] + "</th>");
+                    if (titles[j] == "State")
+                        row += ("<td>" + (data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)] == 0 ? "No answer" : "Initial answer") + "</td>");
+                    else
+                        row += ("<td>" + data[i][titles[j].charAt(0).toLowerCase() + titles[j].slice(1)] + "</td>");
                 }
             }
             row += "</tr>";
@@ -34,6 +37,7 @@ $(document).ready(function() {
             },
             url: url,
             success: function (data, textStatus, xhr) {
+                //console.log(data);
                 fillTable(data, titles, hasInnerObject);
             },
             error: function (xhr, textStatus, errorThrown) {  
@@ -79,5 +83,92 @@ $(document).ready(function() {
         
         getMessages("/api/answers/" + localStorage["email"], 
             ["Id", "Answer", "TechMessage"], true);
+    });
+
+    var id;
+
+    $(".table").on("click", ".row", function () {
+
+        id = $(this)[0]["cells"][0]["innerText"];
+
+        $.ajax({
+            type: "GET",
+            headers: {          
+                Accept: "application/json; charset=utf-8",
+                "Authorization": "Bearer " + localStorage["token"]
+            },
+            url: "/api/messages/" + id,
+            success: function (data, textStatus, xhr) {
+                //console.log(data);
+
+                $("#message-title").val(data["title"]);
+                $("#message").val(data["message"]);
+                $("#message-email").val(data["contactEmail"]);
+                $("#message-admin").val(data["shopAdmin"]["email"]);
+                if (data["techMessageAnswer"] != null)
+                    $("#message-answer").val(data["techMessageAnswer"]["answer"]);
+            },
+            error: function (xhr, textStatus, errorThrown) {  
+                console.log(xhr.status);
+                console.log(textStatus);
+                console.log(errorThrown);
+            } 
+        });
+
+        $(".answer-popup").show();
+    });
+
+    $(".exit").click(function (e) { 
+        e.preventDefault();
+
+        $(".answer-popup").hide();
+    });
+
+    $(".submit-answer").click(function (e) { 
+        e.preventDefault();
+        
+        var data = {
+            id: localStorage["id"],
+            answer: $("#message-answer").val()
+        };
+
+        $.ajax({
+            type: "POST",
+            headers: {          
+                Accept: "application/json; charset=utf-8",
+                "Content-Type": "application/json; charset=utf-8",
+                "Authorization": "Bearer " + localStorage["token"]
+            },
+            data: JSON.stringify(data),
+            url: "/api/messages/answer/" + id,
+            success: function (data, textStatus, xhr) {
+                $(".answer-popup").hide();
+            },
+            error: function (xhr, textStatus, errorThrown) {  
+                console.log(xhr.status);
+                console.log(textStatus);
+                console.log(errorThrown);
+            } 
+        });
+    });
+
+    $(".close-message").click(function (e) { 
+        e.preventDefault();
+        
+        $.ajax({
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage["token"]
+            },
+            url: "/api/messages/close/" + id,
+            success: function (data, textStatus, xhr) {
+                $(".answer-popup").hide();
+            },
+            error: function (xhr, textStatus, errorThrown) {  
+                console.log(xhr.status);
+                console.log(textStatus);
+                console.log(errorThrown);
+            } 
+        });
     });
 });

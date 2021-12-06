@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AtaRK.Models
@@ -22,6 +23,7 @@ namespace AtaRK.Models
         public ShopAdmin ShopAdmin { get; set; }
 
         public int? TechMessageAnswerId { get; set; }
+        [JsonIgnore]
         public TechMessageAnswer TechMessageAnswer { get; set; }
     }
 }

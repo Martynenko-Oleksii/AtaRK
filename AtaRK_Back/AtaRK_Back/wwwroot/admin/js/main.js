@@ -1,4 +1,5 @@
 $(".popup").hide();
+$(".answer-popup").hide();
 
 if (localStorage["date"] != null) {
     if (Date.now() - localStorage["date"] > 3600000) {

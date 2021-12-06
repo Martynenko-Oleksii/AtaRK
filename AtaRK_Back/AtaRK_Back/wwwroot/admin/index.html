@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/add.css">
+    <link rel="stylesheet" href="css/answer.css">
 
     <script src="https://use.fontawesome.com/b2c3693c3e.js"></script>
 </head>
@@ -100,6 +101,34 @@
                     <i class="fa fa-plus"></i>
                 </button>
             </fieldset>
+        </form>
+    </div>
+
+    <div class="answer-popup">
+        <form class="answer-form">
+            <div class="input">
+                <label for="message-title" class="general_info__label">Тема запиту</label>
+                <input id="message-title" type="text" disabled="true" />
+            </div>
+            <div class="input">
+                <label for="message" class="general_info__label">Вміст запиту</label>
+                <textarea id="message" rows="5" disabled="true"></textarea>
+            </div>
+            <div class="input">
+                <label for="message-email" class="general_info__label">Контактна пошта</label>
+                <input id="message-email" type="text" disabled="true" />
+            </div>
+            <div class="input">
+                <label for="message-admin" class="general_info__label">Адмін закладу</label>
+                <input id="message-admin" type="text" disabled="true" />
+            </div>
+            <div class="input">
+                <label for="message-answer" class="general_info__label">Відповідь на запит</label>
+                <textarea id="message-answer" rows="5" placeholder="Answer" required></textarea>
+            </div>
+            <input type="button" class="button exit" value="Вийти">
+            <button type="submit" class="button submit-answer">Відповісти</button>
+            <input type="button" class="button close-message" value="Закрити запит">
         </form>
     </div>
 

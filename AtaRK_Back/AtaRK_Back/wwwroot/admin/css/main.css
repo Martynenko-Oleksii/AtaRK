@@ -67,6 +67,10 @@
     border: 1px solid #eee;
 	table-layout: fixed;
 }
+.table .row:hover {
+    cursor: pointer;
+	background: rgb(131, 131, 131, 0.5);
+}
 .table th {
 	font-weight: bold;
 	padding: 5px;

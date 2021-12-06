@@ -18,6 +18,7 @@ namespace AtaRK.Models
         [JsonIgnore]
         public List<ClimateState> ClimateStates { get; set; }
 
+        [JsonIgnore]
         public List<TechMessage> TechMessages { get; set; }
     }
 }
