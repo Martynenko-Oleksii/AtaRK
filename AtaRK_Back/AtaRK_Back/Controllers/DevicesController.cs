@@ -119,14 +119,13 @@ namespace AtaRK.Controllers
         [Authorize]
         [Route("api/devices/climate/{deviceId}")]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClimateState>>> GetClimateDataBByDevice(int deviceId)
+        public ActionResult<IEnumerable<ClimateState>> GetClimateDataBByDevice(int deviceId)
         {
             try
             {
-                return await dbContext.ClimateDevices
+                return dbContext.ClimateDevices
                     .Include(x => x.ClimateStates)
-                    .Select(x => x.ClimateStates)
-                    .FirstOrDefaultAsync();
+                    .SingleOrDefault(x => x.Id == deviceId).ClimateStates;
             }
             catch (Exception ex)
             {

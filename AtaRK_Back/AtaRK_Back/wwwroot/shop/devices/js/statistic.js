@@ -14,7 +14,8 @@ $(function () {
                 "Authorization": "Bearer " + localStorage["shop_token"]
             },
             url: "/api/devices/climate/" + $(this).attr("id"),
-            success: function (data, textStatus, xhr) {
+            success: function (data, textStatus, xhr) {0
+                console.log($(this).attr("id") == null);
                 console.log(data);
                 $(".popup").show();
     
@@ -22,18 +23,6 @@ $(function () {
                     dataPoints_temp.push({ y: data[i]["temperature"] });
                     dataPoints_hum.push({ y: data[i]["huumidity"] });
                 }
-
-                /*
-                var y = 20;
-    
-                var limit = 100;
-    
-                for ( var i = 0; i < limit; i++ ) {
-                    y += Math.round( 10 + Math.random() * (-10 -10));	
-                    dataPoints_temp.push({ y: y });
-                    dataPoints_hum.push({ y: y });
-                }
-                */
                 
                 var options_temp = {
                     animationEnabled: true,
