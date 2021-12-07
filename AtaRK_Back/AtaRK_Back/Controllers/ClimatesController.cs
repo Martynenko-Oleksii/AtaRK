@@ -72,7 +72,7 @@ namespace AtaRK.Controllers
                 ClimateDevice device = dbContext.ClimateDevices
                     .Include(x => x.FranchiseShop)
                     .Include(x => x.ClimateStates)
-                    .SingleOrDefault(x => x.Id == climateData.ClimateDeviceId);
+                    .SingleOrDefault(x => x.DeviceNumber == climateData.ClimateDeviceNumber);
                 if (device == null)
                 {
                     return BadRequest();
@@ -87,7 +87,6 @@ namespace AtaRK.Controllers
                 };
 
                 dbContext.ClimateStates.Add(climateState);
-                device.ClimateStates.Add(climateState);
                 await dbContext.SaveChangesAsync();
 
                 return Ok();

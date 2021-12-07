@@ -11,6 +11,6 @@ namespace AtaRK.DTO
 
         public double Huumidity { get; set; }
 
-        public int ClimateDeviceId { get; set; }
+        public int ClimateDeviceNumber { get; set; }
     }
 }
