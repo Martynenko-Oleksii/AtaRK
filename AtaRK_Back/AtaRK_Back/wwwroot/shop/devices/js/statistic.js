@@ -1,9 +1,9 @@
 $(function () {
     $(".devices_list").on("click", "li", function() {
 
-        var deviceNumber = "Пристрій: " + $("#number_" + $(this).attr("id")).text();
-        var title_temp = "Температура";
-        var title_hum = "Вологість";
+        var deviceNumber = local_device + $("#number_" + $(this).attr("id")).text();
+        var title_temp = local_temperature;
+        var title_hum = local_humidity;
         var dataPoints_temp = [];
         var dataPoints_hum = [];
     

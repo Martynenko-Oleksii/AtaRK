@@ -6,6 +6,25 @@
 .logo{
     float: left;
 }
+.local {
+    position: absolute;
+    top: 43px;
+    right: 245px;
+}
+.local li{
+    display: inline;
+    margin: 5px;
+}
+.local__btn {
+    background-color: #fff;
+    font-size: 30px;
+    height: 32px;
+    color: black
+}
+.local__btn:hover {
+    cursor: pointer;
+    color: #2cace7;
+}
 
 .container__menu{
     margin-top: 35px;

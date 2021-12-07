@@ -75,7 +75,7 @@ $(function () {
 
                     $("#contact_email").append(row);
                 } else if (data["franchiseContactInfos"][i]["isUrl"]) {
-                    row += "<a href=\"" + data["franchiseContactInfos"][i]["value"] + "\">Посилання</a></p>";
+                    row += "<a href=\"" + data["franchiseContactInfos"][i]["value"] + "\">" + local_url + "</a></p>";
                     row += "<span id=\"url__i\"><i class=\"fa fa-link\"></i></i></span></li>";
 
                     $("#contact_url").append(row);

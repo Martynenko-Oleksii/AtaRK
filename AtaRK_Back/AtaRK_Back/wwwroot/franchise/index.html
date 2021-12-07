@@ -32,6 +32,12 @@
                 </ul>
             </nav>
         </div>
+        <div class="local">
+            <ul>
+                <li><input type="button" class="local__btn" id="ua__btn" value="ua" /></li>
+                <li><input type="button" class="local__btn" id="en__btn" value="en" /></li>
+            </ul>
+        </div>
     </header>
     <div class="reg__log">
         <form class="login__form">
@@ -185,13 +191,13 @@
                         <div class="copyright-menu">
                             <ul>
                                 <li>
-                                    <a href="../">Головна</a>
+                                    <a id="footerMain" href="../">Головна</a>
                                 </li>
                                 <li>
-                                    <a href="../franchise">Франшиза</a>
+                                    <a id="footerFran" href="../franchise">Франшиза</a>
                                 </li>
                                 <li>
-                                    <a href="../shop">Заклад</a>
+                                    <a id="footerShop" href="../shop">Заклад</a>
                                 </li>
                             </ul>
                         </div>
@@ -203,7 +209,8 @@
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script id="jq" src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/setLocal.js"></script>
     <script src="js/get_franchise.js"></script>
     <script src="js/main.js"></script>
     <script src="js/reg_log.js"></script>

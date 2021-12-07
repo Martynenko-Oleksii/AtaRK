@@ -5,8 +5,8 @@ $(document).ready(function () {
     <img id="device-icon" src="img/device_icon.png" alt="Device">
     <div class="device_info">
         <div class="device_info_label">
-            <p class="text city">Номер: </p>
-            <p class="text street">Стан: </p>
+            <p class="text city">` + local_deviceNumber + `</p>
+            <p class="text street">` + local_deviceState + `</p>
         </div>
         <div class="device_info_value">`;
     var end_li = `</div>
