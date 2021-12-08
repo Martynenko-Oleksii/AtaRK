@@ -78,11 +78,17 @@
         <div class="function__menu">
             <ul>
                 <li> <input type="button" class="function__menu__btn" id="export" value="Експортувати" /></li>
-                <li> <input type="button" class="function__menu__btn" id="import" value="Імпортувати" /></li>
+                <li> 
+                    <label for="import" class="custom-file-upload">
+                        <i class="fa fa-cloud-upload"></i> Імпортувати
+                    </label>
+                    <input type="file" class="import__btn" id="import" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                </li>
                 <br> <br>
                 <li> <input type="button" class="function__menu__btn" id="copy" value="Копіювати" /></li>
                 <li> <input type="button" class="function__menu__btn" id="add" value="Додати" /></li>
                 <li> <input type="button" class="function__menu__btn" id="climate__get" value="Отримати статистику" /></li>
+                <li> <input type="number" class="function__menu__btn" id="climate__get__id" placeholder="Id" /></li>
             </ul>
         </div>
     </div>

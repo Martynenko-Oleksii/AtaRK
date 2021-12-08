@@ -19,6 +19,7 @@ var setLocalValues = function() {
 
     $(".custom-file-upload")[0]["innerHTML"] = "<i class=\"fa fa-cloud-upload\"></i> " + local_addBanner;
     $(".custom-file-upload")[1]["innerHTML"] = "<i class=\"fa fa-cloud-upload\"></i> " + local_addImage;
+    $(".custom-file-delete")[0]["innerHTML"] = local_deleteImage;
 
     $(".general_info__label")[0]["innerText"] = local_franTitle;
     $("#title").attr("placeholder", local_franTitle);

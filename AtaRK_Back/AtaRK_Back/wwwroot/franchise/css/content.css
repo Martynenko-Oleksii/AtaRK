@@ -146,3 +146,16 @@ input[type="file"] {
     position: relative;
     margin: -32px;
 }
+
+.custom-file-delete {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid red;
+    cursor: pointer;
+    display: inline-block;
+    padding: 6px 12px;
+}
+.custom-file-delete:hover {
+    color: #fff;
+    background-color: red;
+}

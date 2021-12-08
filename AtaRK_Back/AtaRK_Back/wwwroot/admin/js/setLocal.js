@@ -16,7 +16,7 @@ var setLocalValues = function() {
     $("#tech_message")[0]["innerText"] = local_techMessages;
     
     $("#export").attr("value", local_export);
-    $("#import").attr("value", local_answers);
+    $("#import").attr("value", local_import);
     $("#copy").attr("value", local_copy);
     $("#add").attr("value", local_addAdmin);
     $("#climate__get").attr("value", local_getStaatistic);

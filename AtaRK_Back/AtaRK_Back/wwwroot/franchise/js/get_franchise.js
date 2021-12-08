@@ -27,7 +27,7 @@ var getFranchise = function() {
             for (i = 0; i < data["franchiseImages"].length; i++) {
                 if (!data["franchiseImages"][i]["isBanner"]) {
                     j++;
-                    var slide = "<div class=\"mySlides fade\">";
+                    var slide = "<div id=\"" + data["franchiseImages"][i]["id"] + "\" class=\"mySlides fade\">";
                     slide += "<div class=\"numbertext\">" + j + "</div>";
                     slide += "<img src=\"" + "../.." + data["franchiseImages"][i]["path"] + "\">";
                     slide += "</div>";

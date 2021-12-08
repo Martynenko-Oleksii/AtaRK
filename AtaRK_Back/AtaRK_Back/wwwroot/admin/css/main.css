@@ -130,3 +130,28 @@
     cursor: pointer;
     color: #2cace7;
 }
+
+
+input[type="file"] {
+    display: none;
+}
+.custom-file-upload {
+    position: relative;
+    top: 15px;
+    left: 16%;
+    color: #fff;
+    background-color: #2cace7;
+    border: 1px solid #2cace7;
+    font-size: 24px;
+    cursor: pointer;
+    transition: 0.2s ease-out;
+    padding: 8px 45px
+}
+.custom-file-upload:hover{
+    background-color: #1178a8;
+}
+#climate__get__id {
+    color: #000;
+    background-color: #fff;
+    padding-left: 20px;
+}

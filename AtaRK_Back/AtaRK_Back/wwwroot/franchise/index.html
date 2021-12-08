@@ -135,11 +135,14 @@
                 </form>
             </div>
             <div class="images">
-                <label for="add_img" class="custom-file-upload">
-                    <i class="fa fa-cloud-upload"></i> Додати зображення
-                </label>
-                <input type="file" class="banner__input" id="add_img" multiple accept="image/*,image/jpeg, image/gif" />
-                <br>
+                <div class="images-btns">
+                    <label for="add_img" class="custom-file-upload">
+                        <i class="fa fa-cloud-upload"></i> Додати зображення
+                    </label>
+                    <input type="file" class="banner__input" id="add_img" multiple accept="image/*,image/jpeg, image/gif" />
+                    <label for="delete_img" class="custom-file-delete">Видалити зображення</label>
+                    <input type="button" class="delete__img" id="delete_img" />
+                </div>
                 <div class="imgs">
 
                 </div>
@@ -229,17 +232,22 @@
         function showSlides(n) {
             var i;
             var slides = document.getElementsByClassName("mySlides");
+
             if (n > slides.length) {
                 slideIndex = 1
             }
+
             if (n < 1) {
                 slideIndex = slides.length
             }
+
             for (i = 0; i < slides.length; i++) {
                 slides[i].style.display = "none";
             }
 
             slides[slideIndex-1].style.display = "block";
+
+            imageId = $(".mySlides")[slideIndex-1]["attributes"]["id"]["value"];
         }
     </script>
 </body>

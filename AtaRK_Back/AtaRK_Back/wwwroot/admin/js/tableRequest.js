@@ -54,6 +54,7 @@ $(document).ready(function() {
         getData(["Id", "Email", "Name", "IsMaster"], "/api/sysadmins", "SystemAdmins");
         
         $("#climate__get").hide();
+        $("#climate__get__id").hide();
         $("#add").show();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
@@ -63,6 +64,7 @@ $(document).ready(function() {
         getData(["Id", "Email"], "/api/shopadmins", "ShopAdmins");
         
         $("#climate__get").hide();
+        $("#climate__get__id").hide();
         $("#add").show();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
@@ -72,7 +74,8 @@ $(document).ready(function() {
         getData(["Id", "Email", "Title"], "/api/franchises", "FastFoodFranchises");
 
         $("#add").hide();
-        $("#climate__get").show();
+        $("#climate__get").hide();
+        $("#climate__get__id").hide();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
     });
@@ -82,6 +85,7 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").hide();
+        $("#climate__get__id").hide();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
     });
@@ -91,6 +95,7 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").show();
+        $("#climate__get__id").show();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
     });
@@ -100,6 +105,7 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").show();
+        $("#climate__get__id").show();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
     });
@@ -108,7 +114,8 @@ $(document).ready(function() {
         getData(["Id", "Temperature", "Huumidity", "ClimateDevice"], "/api/climates", "ClimateStates", true);
     
         $("#add").hide();
-        $("#climate__get").show();
+        $("#climate__get").hide();
+        $("#climate__get__id").hide();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
     });
@@ -118,6 +125,7 @@ $(document).ready(function() {
     
         $("#add").hide();
         $("#climate__get").hide();
+        $("#climate__get__id").hide();
         $(".popup").hide();
         $(".database__table").css("visibility", "visible");
     });

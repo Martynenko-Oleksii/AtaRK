@@ -16,6 +16,7 @@ if (localStorage["date"] != null) {
         $("#answers").css({"border-color": "#fff"});
         $("#add").hide();
         $("#climate__get").hide();
+        $("#climate__get__id").hide();
     }
 }
 else {

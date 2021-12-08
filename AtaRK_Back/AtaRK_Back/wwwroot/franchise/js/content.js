@@ -100,7 +100,7 @@ $("#add_img").change(function (e) {
                 for (i = 0; i < data["franchiseImages"].length; i++) {
                     if (!data["franchiseImages"][i]["isBanner"]) {
                         j++;
-                        var slide = "<div class=\"mySlides fade\">";
+                        var slide = "<div id=\"" + data["franchiseImages"][i]["id"] + "\" class=\"mySlides fade\">";
                         slide += "<div class=\"numbertext\">" + j + " / 3</div>";
                         slide += "<img src=\"" + "../.." + data["franchiseImages"][i]["path"] + "\">";
                         slide += "</div>";
@@ -229,4 +229,43 @@ $(".delete__row").click(function (e) {
             console.log(errorThrown);
         }
     });
+});
+
+var imageId = 0;
+
+$("#delete_img").click(function (e) { 
+    e.preventDefault();
+    
+    if (imageId != 0) {
+        var lastImageId = $(".mySlides").last()[0]["attributes"]["id"]["value"];
+        var nextId = 0;
+        if (imageId != lastImageId) {
+            nextId = $("#" + imageId).next()[0]["attributes"]["id"]["value"];
+        } else {
+            nextId = $(".mySlides")[0]["attributes"]["id"]["value"];
+        }
+        $.ajax({
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer " + localStorage["fran_token"]
+            },
+            url: "/api/franchises/images/delete/" + imageId,
+            success: function (data, textStatus, xhr) {
+                $("#" + nextId).css("display", "block");
+                $("#" + imageId).remove();
+
+                if (nextId == imageId) {
+                    $(".next").remove();
+                    $(".prev").remove();
+                }
+
+                imageId = nextId;
+            },
+            error: function (xhr, textStatus, errorThrown) {  
+                console.log(xhr.status);
+                console.log(textStatus);
+                console.log(errorThrown);
+            } 
+        });
+    }
 });
