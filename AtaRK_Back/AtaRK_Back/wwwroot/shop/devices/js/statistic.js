@@ -14,9 +14,7 @@ $(function () {
                 "Authorization": "Bearer " + localStorage["shop_token"]
             },
             url: "/api/devices/climate/" + $(this).attr("id"),
-            success: function (data, textStatus, xhr) {0
-                console.log($(this).attr("id") == null);
-                console.log(data);
+            success: function (data, textStatus, xhr) {
                 $(".popup").show();
     
                 for (i = 0; i < data.length; i++) {
