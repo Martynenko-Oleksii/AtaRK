@@ -115,6 +115,25 @@ namespace AtaRK.Controllers
         }
 
         [Authorize]
+        [Route("api/shops/{adminId}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<FranchiseShop>>> GetAdminShops(int adminId)
+        {
+            try
+            {
+                ShopAdmin admin = _dbContext.ShopAdmins.Find(adminId);
+                return await _dbContext.FranchiseShops
+                   .Include(x => x.ShopAdmins)
+                   .Where(x => x.ShopAdmins.Contains(admin))
+                   .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}\n{ex.InnerException}");
+            }
+        }
+
+        [Authorize]
         [Route("api/shops/{shopEmail}")]
         [HttpGet]
         public async Task<ActionResult<FranchiseShop>> GetShop(string shopEmail)
