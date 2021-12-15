@@ -77,6 +77,7 @@ namespace AtaRK.Controllers
                 {
                     return BadRequest();
                 }
+                device.IsOnline = true;
 
                 ClimateState climateState = new ClimateState
                 { 

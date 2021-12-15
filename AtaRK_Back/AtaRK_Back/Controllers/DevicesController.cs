@@ -80,8 +80,13 @@ namespace AtaRK.Controllers
                     return BadRequest("Device Already Added");
                 }
 
-                dbContext.ClimateDevices.Add(climateDevice);
-                shop.ClimateDevices.Add(climateDevice);
+                ClimateDevice newDevice = new ClimateDevice
+                {
+                    DeviceNumber = climateDevice.DeviceNumber,
+                    FranchiseShop = shop
+                };
+
+                dbContext.ClimateDevices.Add(newDevice);
                 await dbContext.SaveChangesAsync();
 
                 return Ok();
