@@ -39,12 +39,20 @@ namespace AtaRK.Controllers
                     return BadRequest("Email Is Already Taken");
                 }
 
+                FastFoodFranchise dbFranchise = _dbContext.FastFoodFranchises
+                    .SingleOrDefault(x => x.Email == authData.FastFoodFranchise.Email);
+                if (dbFranchise == null)
+                {
+                    return BadRequest("Franchise Not Found");
+                }
+
                 HMACSHA512 hmac = new HMACSHA512();
                 FranchiseShop shop = new FranchiseShop
                 {
                     Email = authData.Email,
                     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(authData.Password)),
-                    PasswordSalt = hmac.Key
+                    PasswordSalt = hmac.Key,
+                    FastFoodFranchise = dbFranchise
                 };
 
                 _dbContext.FranchiseShops.Add(shop);
