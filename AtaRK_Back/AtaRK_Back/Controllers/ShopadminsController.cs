@@ -98,14 +98,13 @@ namespace AtaRK.Controllers
         }
 
         [Authorize]
-        [Route("api/shopadmins/change_authdata")]
+        [Route("api/shopadmins/change_authdata/{adminId}")]
         [HttpPost]
-        public async Task<ActionResult<UserDto>> ChangeShopadminAuthData(AuthDto authData)
+        public async Task<ActionResult<UserDto>> ChangeShopadminAuthData([FromRoute] int adminId, [FromBody] AuthDto authData)
         {
             try
             {
-                ShopAdmin dbShopAdmin = _dbContext.ShopAdmins.
-                    SingleOrDefault(x => x.Email == authData.Email);
+                ShopAdmin dbShopAdmin = _dbContext.ShopAdmins.Find(adminId);
                 if (dbShopAdmin == null)
                 {
                     return BadRequest("Shop Admin Not Found");
