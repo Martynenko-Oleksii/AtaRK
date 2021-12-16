@@ -173,8 +173,6 @@ namespace AtaRK.Controllers
                     ShopAdmin = shopAdmin
                 };
                 _dbContext.TechMessages.Add(techMessage);
-                device.TechMessages.Add(techMessage);
-                shopAdmin.TechMessages.Add(techMessage);
                 await _dbContext.SaveChangesAsync();
 
                 return Ok();

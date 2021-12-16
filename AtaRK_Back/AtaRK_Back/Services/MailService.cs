@@ -48,6 +48,7 @@ namespace AtaRK_Back.Services
 
                 const string fromName = "AtarkBot";
                 MailMessage message = GetMessage(toEmail, body, fromName);
+                message.Subject = "Питання щодо франшизи";
                 SendEmail(message);
 
                 return true;
@@ -75,6 +76,7 @@ namespace AtaRK_Back.Services
 
                 string fromName = admin.Name;
                 MailMessage message = GetMessage(toEmail, body, fromName);
+                message.Subject = "Відповідь на ваш запит";
                 SendEmail(message);
 
                 return true;
@@ -119,7 +121,6 @@ namespace AtaRK_Back.Services
             MailAddress from = new MailAddress(_fromEmail, fromName);
             MailAddress to = new MailAddress(toEmail);
             MailMessage message = new MailMessage(from, to);
-            message.Subject = "Питання щодо франшизи";
             message.Body = body;
             message.IsBodyHtml = true;
 

@@ -28,9 +28,9 @@ namespace AtaRK.Controllers
         }
 
         [Authorize]
-        [Route("api/shops/register")]
+        [Route("api/shops/register/{adminId}")]
         [HttpPost]
-        public async Task<ActionResult<UserDto>> Register(AuthDto authData)
+        public async Task<ActionResult<UserDto>> Register([FromRoute] int adminId, [FromBody] AuthDto authData)
         {
             try
             {
@@ -47,12 +47,15 @@ namespace AtaRK.Controllers
                 }
 
                 HMACSHA512 hmac = new HMACSHA512();
+                List<ShopAdmin> admins = new List<ShopAdmin>();
+                admins.Add(_dbContext.ShopAdmins.SingleOrDefault(x => x.Id == adminId));
                 FranchiseShop shop = new FranchiseShop
                 {
                     Email = authData.Email,
                     PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(authData.Password)),
                     PasswordSalt = hmac.Key,
-                    FastFoodFranchise = dbFranchise
+                    FastFoodFranchise = dbFranchise,
+                    ShopAdmins = admins
                 };
 
                 _dbContext.FranchiseShops.Add(shop);
@@ -122,8 +125,7 @@ namespace AtaRK.Controllers
             }
         }
 
-        [Authorize]
-        [Route("api/shops/{adminId}")]
+        [Route("api/shops/admin/{adminId}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<FranchiseShop>>> GetAdminShops(int adminId)
         {
